@@ -1,0 +1,423 @@
+
+# для удобства запомним адрес в переменную
+#export ES_URL=$(docker-machine ip dev):9200
+#export ES_URL=localhost:9200
+#curl -X GET $ES_URL
+GET {{host}}/_cat/health
+
+###
+
+# Добавим документ c id 1 типа post в индекс blog.
+# ?pretty указывает, что вывод должен быть человеко-читаемым.
+#curl -XPUT "$ES_URL/blog/post/1?pretty" -d'
+#{
+#  "title": "Веселые котята",
+#  "content": "<p>Смешная история про котят<p>",
+#  "tags": [
+#    "котята",
+#    "смешная история"
+#  ],
+#  "published_at": "2014-09-12T20:44:42+00:00"
+#}'
+PUT {{host}}/blog/post/1?pretty
+content-type: application/json; charset=UTF-8
+
+{
+  "title": "Веселые котята",
+  "content": "<p>Смешная история про котят<p>",
+  "tags": [
+    "котята",
+    "смешная история"
+  ],
+  "published_at": "2014-09-12T20:44:42+00:00"
+}
+
+###
+
+# Получим mapping всех типов индекса blog
+#curl -XGET "$ES_URL/blog/_mapping?pretty"
+GET {{host}}/blog/_mapping?pretty
+
+###
+
+# извлечем документ с id 1 типа post из индекса blog
+#curl -XGET "$ES_URL/blog/post/1?pretty"
+GET {{host}}/blog/post/1?pretty
+
+###
+
+#curl -XGET "$ES_URL/blog/post/1/_source?pretty"
+GET {{host}}/blog/post/1/_source?pretty
+
+###
+
+# извлечем только поле title
+#curl -XGET "$ES_URL/blog/post/1?_source=title&pretty"
+GET {{host}}/blog/post/1?_source=title&pretty
+
+###
+
+#curl -XPUT "$ES_URL/blog/post/2" -d'
+#{
+#  "title": "Веселые щенки",
+#  "content": "<p>Смешная история про щенков<p>",
+#  "tags": [
+#    "щенки",
+#    "смешная история"
+#  ],
+#  "published_at": "2014-08-12T20:44:42+00:00"
+#}'
+PUT {{host}}/blog/post/2
+content-type: application/json; charset=UTF-8
+
+{
+  "title": "Веселые щенки",
+  "content": "<p>Смешная история про щенков<p>",
+  "tags": [
+    "щенки",
+    "смешная история"
+  ],
+  "published_at": "2014-08-12T20:44:42+00:00"
+}
+
+###
+
+
+#curl -XPUT "$ES_URL/blog/post/3" -d'
+#{
+#  "title": "Как у меня появился котенок",
+#  "content": "<p>Душераздирающая история про бедного котенка с улицы<p>",
+#  "tags": [
+#    "котята"
+#  ],
+#  "published_at": "2014-07-21T20:44:42+00:00"
+#}'
+PUT {{host}}/blog/post/3
+content-type: application/json; charset=UTF-8
+
+{
+  "title": "Как у меня появился котенок",
+  "content": "<p>Душераздирающая история про бедного котенка с улицы<p>",
+  "tags": [
+    "котята"
+  ],
+  "published_at": "2014-07-21T20:44:42+00:00"
+}
+
+###
+
+# найдем последний пост по дате публикации и извлечем поля title и published_at
+#curl -XGET "$ES_URL/blog/post/_search?pretty" -d'
+#{
+#  "size": 1,
+#  "_source": ["title", "published_at"],
+#  "sort": [{"published_at": "desc"}]
+#}
+GET {{host}}/blog/post/_search?pretty
+content-type: application/json; charset=UTF-8
+
+{
+  "size": 1,
+  "_source": [
+    "title",
+    "published_at"
+  ],
+  "sort": [
+    {
+      "published_at": "desc"
+    }
+  ]
+}
+
+###
+
+# получим посты, опубликованные 1ого сентября или позже
+#curl -XGET "$ES_URL/blog/post/_search?pretty" -d'
+#{
+#  "filter": {
+#    "range": {
+#      "published_at": { "gte": "2014-09-01" }
+#    }
+#  }
+#}'
+GET {{host}}/blog/post/_search?pretty
+content-type: application/json; charset=UTF-8
+
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "published_at": {
+            "gte": "2014-09-01"
+          }
+        }
+      }
+    }
+  }
+}
+
+###
+
+# найдем все документы, в поле tags которых есть элемент 'котята'
+#curl -XGET "$ES_URL/blog/post/_search?pretty" -d'
+#{
+#  "_source": [
+#    "title",
+#    "tags"
+#  ],
+#  "filter": {
+#    "term": {
+#      "tags": "котята"
+#    }
+#  }
+#}'
+
+GET {{host}}/blog/post/_search?pretty
+content-type: application/json; charset=UTF-8
+
+{
+  "_source": [
+    "title",
+    "tags"
+  ],
+  "query": {
+    "bool":{
+      "filter": {
+        "term": {
+          "tags": "котята"
+        }
+      }
+    }
+  }
+}
+
+###
+
+# source: false означает, что не нужно извлекать _source найденных документов
+#curl -XGET "$ES_URL/blog/post/_search?pretty" -d'
+#{
+#  "_source": false,
+#  "query": {
+#    "match": {
+#      "content": "история"
+#    }
+#  }
+#}'
+
+GET {{host}}/blog/post/_search?pretty
+Content-Type: application/json; charset=UTF-8
+
+{
+  "_source": false,
+  "query": {
+    "match": {
+      "content": "история"
+    }
+  }
+}
+
+###
+
+# используем анализатор standard
+# обязательно нужно перекодировать не ASCII символы
+#curl -XGET "$ES_URL/_analyze?pretty&analyzer=standard&text=%D0%92%D0%B5%D1%81%D0%B5%D0%BB%D1%8B%D0%B5%20%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D0%B8%20%D0%BF%D1%80%D0%BE%20%D0%BA%D0%BE%D1%82%D1%8F%D1%82"
+GET {{host}}/_analyze?pretty
+Content-Type: application/json; charset=UTF-8
+
+{
+  "analyzer": "standard",
+  "text": "Веселые истории про котят"
+}
+###
+
+# используем анализатор russian
+#curl -XGET "$ES_URL/_analyze?pretty&analyzer=russian&text=%D0%92%D0%B5%D1%81%D0%B5%D0%BB%D1%8B%D0%B5%20%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D0%B8%20%D0%BF%D1%80%D0%BE%20%D0%BA%D0%BE%D1%82%D1%8F%D1%82"GET {{host}}/_analyze?pretty
+GET {{host}}/_analyze?pretty
+Content-Type: application/json; charset=UTF-8
+
+{
+  "analyzer": "russian",
+  "text": "Веселые истории про котят"
+}
+###
+
+DELETE {{host}}/blog2
+###
+
+PUT {{host}}/blog2
+Content-Type: application/json; charset=UTF-8
+
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "ru_stop": {
+          "type": "stop",
+          "stopwords": "_russian_"
+        },
+        "ru_stemmer": {
+          "type": "stemmer",
+          "language": "russian"
+        }
+      },
+      "analyzer": {
+        "default": {
+          "char_filter": [
+            "html_strip"
+          ],
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "ru_stop",
+            "ru_stemmer"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "post": {
+      "properties": {
+        "content": {
+          "type": "text"
+        },
+        "published_at": {
+          "type": "date"
+        },
+        "tags": {
+          "type": "text"
+        },
+        "title": {
+          "type": "text"
+        }
+      }
+    }
+  }
+}
+
+###
+
+PUT {{host}}/blog2/post/1?pretty
+content-type: application/json; charset=UTF-8
+
+{
+  "title": "Веселые котята",
+  "content": "<p>Смешная история про котят<p>",
+  "tags": [
+    "котята",
+    "смешная история"
+  ],
+  "published_at": "2014-09-12T20:44:42+00:00"
+}
+
+###
+
+PUT {{host}}/blog2/post/2
+content-type: application/json; charset=UTF-8
+
+{
+  "title": "Веселые щенки",
+  "content": "<p>Смешная история про щенков<p>",
+  "tags": [
+    "щенки",
+    "смешная история"
+  ],
+  "published_at": "2014-08-12T20:44:42+00:00"
+}
+
+###
+
+PUT {{host}}/blog2/post/3
+content-type: application/json; charset=UTF-8
+
+{
+  "title": "Как у меня появился котенок",
+  "content": "<p>Душераздирающая история про бедного котенка с улицы<p>",
+  "tags": [
+    "котята"
+  ],
+  "published_at": "2014-07-21T20:44:42+00:00"
+}
+
+###
+
+# найдем документы, в которых встречается слово 'истории'
+# query -> simple_query_string -> query содержит поисковый запрос
+# поле title имеет приоритет 3
+# поле tags имеет приоритет 2
+# поле content имеет приоритет 1
+# приоритет используется при ранжировании результатов
+#curl -XPOST "$ES_URL/blog2/post/_search?pretty" -d'
+#{
+#  "query": {
+#    "simple_query_string": {
+#      "query": "истории",
+#      "fields": [
+#        "title^3",
+#        "tags^2",
+#        "content"
+#      ]
+#    }
+#  }
+#}'
+POST {{host}}/blog2/post/_search?pretty
+Content-Type: application/json; charset=UTF-8
+
+{
+  "query": {
+    "simple_query_string": {
+      "query": "истории",
+      "fields": [
+        "title^3",
+        "tags^2",
+        "content"
+      ]
+    }
+  }
+}
+
+###
+
+# найдем документы без слова 'щенки'
+#curl -XPOST "$ES_URL/blog2/post/_search?pretty" -d'
+#{
+#  "query": {
+#    "simple_query_string": {
+#      "query": "-щенки",
+#      "fields": [
+#        "title^3",
+#        "tags^2",
+#        "content"
+#      ]
+#    }
+#  }
+#}'
+# получим 2 поста про котиков
+POST {{host}}/blog2/post/_search?pretty
+Content-Type: application/json; charset=UTF-8
+
+{
+  "query": {
+    "simple_query_string": {
+      "query": "-щенки",
+      "fields": [
+        "title^3",
+        "tags^2",
+        "content"
+      ]
+    }
+  }
+}
+
+###
+
+
+
+
+
+
+
+
+
+

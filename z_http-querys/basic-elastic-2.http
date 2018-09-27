@@ -1,0 +1,328 @@
+GET {{host}}/_cat/health?v
+###
+
+GET {{host}}/_cat/nodes?v
+###
+
+GET {{host}}/_cat/indices?v
+###
+
+#curl -H "Content-Type: application/json" -XPOST "localhost:9200/bank/_doc/_bulk?pretty&refresh" --data-binary "@accounts.json"
+#curl "localhost:9200/_cat/indices?v"
+GET {{host}}/_cat/indices?v
+###
+POST {{host}}/bank/_doc/_bulk?pretty&refresh
+Content-Type: application/json
+
+< accounts.json
+###
+
+GET {{host}}/bank/_search?q=*&sort=account_number:asc&pretty
+###
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": { "match_all": {} },
+  "sort": [
+    { "account_number": "asc" }
+  ]
+}
+###
+
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": { "match_all": {} }
+}
+###
+
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": { "match_all": {} },
+  "size": 1
+}
+###
+
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": { "match_all": {} },
+  "from": 10,
+  "size": 10
+}
+###
+
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": { "match_all": {} },
+  "sort": { "balance": { "order": "desc" } }
+}
+###
+
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {"match_all": {}},
+  "_source": ["account_number", "balance"]
+}
+###
+
+# В этом примере возвращается учетная запись с номером 20:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {"match": {"account_number": 20}}
+}
+###
+
+# В этом примере возвращаются все учетные записи, содержащие термин «mill» в адресе:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {"match": {"address": "mill"}}
+}
+###
+
+# В этом примере возвращаются все учетные записи, содержащие термин «mill» или «lane» в адресе:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {"match": {"address": "mill lane"}}
+}
+###
+
+# Этот пример является вариантом match( match_phrase), который возвращает все учетные записи, содержащие фразу «mill lane» в адресе:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {"match_phrase": {"address": "mill lane"}}
+}
+###
+
+# Этот пример состоит из двух matchзапросов и возвращает все учетные записи, содержащие «mill» и «lane» в адресе:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    }
+  }
+}
+###
+
+# Напротив, этот пример составляет два matchзапроса и возвращает все учетные записи, содержащие «mill» или «lane» в адресе:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    }
+  }
+}
+###
+
+# Напротив, этот пример составляет два matchзапроса и возвращает все учетные записи, содержащие «mill» или «lane» в адресе:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    }
+  }
+}
+###
+
+# Мы можем комбинировать must, should и must_not предложения одновременно внутри bool запроса.
+# Кроме того, мы можем составлять bool запросы внутри любого из этих bool предложений, чтобы имитировать любую сложную многоуровневую логическую логику.
+
+# Этот пример возвращает все учетные записи любого, кому 40 лет, но не живет в ID (aho):
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "age": "40" } }
+      ],
+      "must_not": [
+        { "match": { "state": "ID" } }
+      ]
+    }
+  }
+}
+###
+
+# В этом примере используется запрос bool для возврата всех учетных записей с остатками от 20000 до 30000 включительно.
+# Другими словами, мы хотим найти счета с балансом, который больше или равен 20000 и меньше или равен 30000.
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must": { "match_all": {} },
+      "filter": {
+        "range": {
+          "balance": {
+            "gte": 20000,
+            "lte": 30000
+          }
+        }
+      }
+    }
+  }
+}
+###
+
+# Для начала в этом примере группируются все учетные записи по состояниям, а затем возвращается состояние 10 (по умолчанию), отсортированное по убыванию (также по умолчанию):
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      }
+    }
+  }
+}
+###
+
+# Основываясь на предыдущей агрегации, в этом примере вычисляется средний баланс счета по состоянию (опять же только для 10 лучших состояний, отсортированных по счету в порядке убывания):
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      },
+      "aggs": {
+        "average_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+###
+
+# Основываясь на предыдущем агрегации, давайте теперь сортировать по среднему балансу в порядке убывания:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword",
+        "order" : {
+          "average_balance" : "desc"
+        }
+      },
+      "aggs": {
+        "average_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+###
+
+# Этот пример демонстрирует, как мы можем группировать по возрастным группам (возрасты 20-29, 30-39 и 40-49),
+# затем по полу, а затем, наконец, получить средний баланс по счету для каждой возрастной группы по полу:
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "group_by_age": {
+      "range": {
+        "field": "age",
+        "ranges": [
+          {
+            "from": 20,
+            "to": 30
+          },
+          {
+            "from": 30,
+            "to": 40
+          },
+          {
+            "from": 40,
+            "to": 50
+          }
+        ]
+      },
+      "aggs": {
+        "group_by_gender": {
+          "terms": {
+            "field": "gender.keyword"
+          },
+          "aggs": {
+            "average_balance": {
+              "avg": {
+                "field": "balance"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+###
+
+# Поиск документов по списку идентификаторов
+GET {{host}}/bank/_search
+Content-Type: application/json
+
+{
+    "query": {
+        "ids" : {
+            "type" : "_doc",
+            "values" : ["1", "4", "1000"]
+        }
+    }
+}
+###
+
