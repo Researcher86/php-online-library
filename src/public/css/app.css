@@ -9501,10 +9501,6 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 
-#app {
-  min-height: 100vh;
-}
-
 .navbar-laravel {
   background-color: black !important;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
@@ -9512,13 +9508,10 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 #app {
-  background-image: url("../img/bg2.jpg");
+  min-height: 100vh;
+  background-image: url("/img/bg2.jpg");
   background-repeat: repeat-x;
   background-attachment: local;
-}
-
-.logo {
-  height: 40px;
 }
 
 .book {
@@ -9535,14 +9528,14 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .row-product-bot {
-  background-image: url("../img/Row-product-bot.png");
+  background-image: url("/img/Row-product-bot.png");
   background-repeat: no-repeat;
   background-position: bottom;
   height: 100px;
 }
 
 .books {
-  padding-top: 70px;
+  padding-top: 120px;
   margin-bottom: -35px;
   z-index: 1;
   text-align: center;

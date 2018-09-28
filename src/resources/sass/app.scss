@@ -8,35 +8,16 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-#app {
-  min-height: 100vh;
-}
-
 .navbar-laravel {
   background-color: black !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-.ru{
-
-}
-
-.en{
-
-}
-
 #app {
-  background-image: url("../img/bg2.jpg");
+  min-height: 100vh;
+  background-image: url("/img/bg2.jpg");
   background-repeat: repeat-x;
   background-attachment: local;
-}
-
-//.container{
-//  width: 1200px !important;
-//}
-
-.logo {
-  height: 40px;
 }
 
 .book{
@@ -51,21 +32,15 @@
   box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
 }
 
-//.header-bg {
-//  float: left;
-//  margin-top: -77px;
-//  height: 400px !important;
-//}
-
 .row-product-bot {
-  background-image: url("../img/Row-product-bot.png");
+  background-image: url("/img/Row-product-bot.png");
   background-repeat: no-repeat;
   background-position: bottom;
   height: 100px;
 }
 
 .books {
-  padding-top: 70px;
+  padding-top: 120px;
   margin-bottom: -35px;
   z-index: 1;
   text-align: center;

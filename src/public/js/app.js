@@ -47410,7 +47410,7 @@ if (false) {
 /* 43 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: ModuleBuildError: Module build failed: \n@import '~@fortawesome/fontawesome-free/scss/brands';\n^\n      File to import not found or unreadable: ~@fortawesome/fontawesome-free/scss/brands.\n      in /var/www/resources/sass/app.scss (line 10, column 1)\n    at runLoaders (/var/www/node_modules/webpack/lib/NormalModule.js:195:19)\n    at /var/www/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/var/www/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (/var/www/node_modules/sass-loader/lib/loader.js:55:13)\n    at Object.done [as callback] (/var/www/node_modules/neo-async/async.js:7974:18)\n    at options.error (/var/www/node_modules/node-sass/lib/index.js:294:32)");
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

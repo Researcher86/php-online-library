@@ -15,15 +15,18 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 <div id="app" class="d-flex flex-column">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top navbar-laravel">
         <div class="container">
+
             <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="/img/books.png" width="30" height="30" class="d-inline-block align-top" alt="">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -37,14 +40,17 @@
                 <ul class="navbar-nav mr-auto">
 
                 </ul>
-
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                </form>
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item ru">
-                        <a class="nav-link" href="?lang=ru">RU</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?lang=ru"><img src="/img/flags/ru.png" class="d-inline-block align-baseline" alt=""> RU</a>
                     </li>
-                    <li class="nav-item en">
-                        <a class="nav-link" href="?lang=en">EN</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?lang=en"><img src="/img/flags/us.png" class="d-inline-block align-baseline" alt=""> EN</a>
                     </li>
 
                     <!-- Authentication Links -->
@@ -82,11 +88,11 @@
     </nav>
 
     <div class="books">
-        <img src="../img/books/07139043.cover_250.jpg" alt="">
-        <img src="../img/books/09014102.cover_250.jpg" alt="">
-        <img src="../img/books/13704951.cover_250.jpg" alt="">
-        <img src="../img/books/26174170.cover_250.jpg" alt="">
-        <img src="../img/books/27385132.cover_250.jpg" alt="">
+        <img src="/img/books/07139043.cover_250.jpg" alt="">
+        <img src="/img/books/09014102.cover_250.jpg" alt="">
+        <img src="/img/books/13704951.cover_250.jpg" alt="">
+        <img src="/img/books/26174170.cover_250.jpg" alt="">
+        <img src="/img/books/27385132.cover_250.jpg" alt="">
     </div>
     <div class="row-product-bot"></div>
 
@@ -103,23 +109,18 @@
                 </div>
                 <div class="col-md-4">
                     <div>
-                        <i class="fa fa-map-marker"></i>
-                        <p><span>Казахстан, г. Костанай</span></p>
+                        <i class="fas fa-map-marker-alt"></i><span> Казахстан, г. Костанай</span>
                     </div>
-
                     <div>
-                        <i class="fa fa-phone"></i>
-                        <p>+7 452 123456</p>
+                        <i class="fas fa-phone"></i><span> +7 452 123456</span>
                     </div>
-
                     <div>
-                        <i class="fa fa-envelope"></i>
-                        <p><a href="mailto:support@javabegin.ru">support@javabegin.ru</a></p>
+                        <i class="fas fa-envelope"></i><a href="mailto:researcher2286@gmail.com"> researcher2286@gmail.com</a>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <span>О библиотеке</span> <br>
-                    <span class="small">Онлайн библиотека предназначена для поиска и просмотра книг по различным жанрам. Администраторы имеют возможность добавлять, удалять, редактировать.</span>
+                    <span class="small">Онлайн библиотека предназначена для поиска и просмотра книг по различным жанрам.</span>
                 </div>
             </div>
         </div>
