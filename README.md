@@ -5,6 +5,7 @@
 * Nginx 1.15
 * PHP 7, Laravel 5, Composer 1.7
 * Node 8.12
+* Vue.js 2.5
 * Bootstrap 4
 * MySQL 8.0
 * Redis 4.0
