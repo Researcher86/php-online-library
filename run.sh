@@ -24,6 +24,10 @@ if [ "$1" = "artisan" ]; then
     docker-compose run php-cli php artisan $2
 fi
 
+if [ "$1" = "db-refresh" ]; then
+    docker-compose run php-cli php artisan refresh --seed
+fi
+
 if [ "$1" = "tinker" ]; then
     docker-compose run php-cli php artisan tinker # Interactive run laravel code
 fi
