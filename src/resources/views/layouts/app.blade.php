@@ -96,7 +96,7 @@
     </div>
     <div class="row-product-bot"></div>
 
-    <main class="flex-fill py-lg-5">
+    <main class="flex-fill py-lg-4">
         @yield('content')
     </main>
 

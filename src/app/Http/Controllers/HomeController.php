@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Genres\GenreServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
+    private $genreService;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(GenreServiceInterface $genreService)
     {
-
+        $this->genreService = $genreService;
     }
 
     /**
@@ -24,10 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-//        if (Cache::get('key') == null) {
-//            sleep(10);
-//            Cache::put('key', 'value', 1);
-//        }
-        return view('home');
+        $genres = $this->genreService->getAll();
+        return view('home', compact('genres'));
     }
 }
