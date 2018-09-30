@@ -12,7 +12,7 @@ class HomeControllerTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testHomePage()
     {
         $response = $this->get('/');
 
