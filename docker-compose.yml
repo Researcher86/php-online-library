@@ -56,7 +56,6 @@ services:
         image: node:8.12-alpine
         volumes:
             - ./src:/var/www
-            - ./node_modules:/var/www/node_modules
         working_dir: /var/www
         tty: true
     composer:
