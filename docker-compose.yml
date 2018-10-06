@@ -16,8 +16,6 @@ services:
         build:
             context: ./
             dockerfile: docker/php-fpm.docker
-        environment:
-            - "PHP_IDE_CONFIG=serverName=Docker"
         volumes:
             - ./src:/var/www
         depends_on:
@@ -28,6 +26,16 @@ services:
         build:
             context: ./
             dockerfile: docker/php-cli.docker
+        volumes:
+            - ./src:/var/www
+        depends_on:
+            - mysql
+            - redis
+            - elasticsearch
+    php-cli-xdebug:
+        build:
+            context: ./
+            dockerfile: docker/php-cli-xdebug.docker
         environment:
             - "PHP_IDE_CONFIG=serverName=Docker"
         volumes:
@@ -36,7 +44,6 @@ services:
             - mysql
             - redis
             - elasticsearch
-        tty: true
     mysql:
         image: mysql:8.0
         volumes:
