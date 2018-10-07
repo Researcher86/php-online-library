@@ -40,6 +40,8 @@ services:
             - "PHP_IDE_CONFIG=serverName=Docker"
         volumes:
             - ./src:/var/www
+            - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./storage/docker/profiler:/tmp/profiler
         depends_on:
             - mysql
             - redis
