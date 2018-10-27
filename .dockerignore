@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+docker/
+src/node_modules/
+.idea/
+.git/
+src/.env
+storage/
+z_http-querys/
+ТЗ.docx
+run.sh
