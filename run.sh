@@ -12,8 +12,20 @@ if [ "$1" = "down" ]; then
     docker-compose down
 fi
 
+if [ "$1" = "start" ]; then
+    docker-compose start
+fi
+
+if [ "$1" = "stop" ]; then
+    docker-compose stop
+fi
+
 if [ "$1" = "restart" ]; then
     docker-compose restart
+fi
+
+if [ "$1" = "logs" ]; then
+    docker-compose logs $2
 fi
 
 if [ "$1" = "test" ]; then
