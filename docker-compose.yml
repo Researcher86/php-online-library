@@ -19,7 +19,7 @@ services:
         volumes:
             - ./src:/var/www
         depends_on:
-            - mysql
+            - postgresql
             - redis
             - elasticsearch
     php-cli:
@@ -29,7 +29,7 @@ services:
         volumes:
             - ./src:/var/www
         depends_on:
-            - mysql
+            - postgresql
             - redis
             - elasticsearch
     php-cli-xdebug:
@@ -43,20 +43,19 @@ services:
             - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - ./storage/docker/profiler:/tmp/profiler
         depends_on:
-            - mysql
+            - postgresql
             - redis
             - elasticsearch
-    mysql:
-        image: mysql:8.0
-        volumes:
-            - ./storage/docker/mysql:/var/lib/mysql
+    postgresql:
+        image: postgres:11.1-alpine
+#        volumes:
+#            - ./storage/docker/pgdata:/var/lib/postgresql/data
         environment:
-            - "MYSQL_ROOT_PASSWORD=123456"
-            - "MYSQL_DATABASE=library"
-            - "MYSQL_USER=app"
-            - "MYSQL_PASSWORD=123456"
+            - "POSTGRES_DB=library"
+            - "POSTGRES_USER=app"
+            - "POSTGRES_PASSWORD=123456"
         ports:
-            - "33061:3306"
+            - "5432:5432"
     redis:
         image: redis:4.0
         ports:

@@ -3,10 +3,10 @@
 
 ### Технологии:
 * Nginx 1.15
-* PHP 7, Laravel 5, Composer 1.7
+* PHP 7.2, Laravel 5.7.11, Composer 1.7
 * Node 8.12
 * Vue.js 2.5
 * Bootstrap 4
-* MySQL 8.0
+* PostgreSQL 11.1
 * Redis 4.0
 * Elasticsearch 6.4.1
