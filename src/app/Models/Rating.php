@@ -11,6 +11,7 @@ class Rating extends Model
     ];
 
     public $timestamps = false;
+    public $incrementing = false;
 
     public static function new(int $rating, User $user)
     {
