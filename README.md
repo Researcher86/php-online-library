@@ -10,3 +10,4 @@
 * PostgreSQL 11.1
 * Redis 4.0
 * Elasticsearch 6.4.1
+* MongoDB 4.1

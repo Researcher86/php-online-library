@@ -85,9 +85,23 @@ services:
             - elasticsearch-data:/usr/share/elasticsearch/data
         ports:
             - "9201:9200"
+    mongo:
+        image: mongo:4.1
+        ports:
+            - "27017:27017"
+        environment:
+#            - "MONGO_INITDB_ROOT_USERNAME=app"
+#            - "MONGO_INITDB_ROOT_PASSWORD=123456"
+            - "MONGO_INITDB_DATABASE=library"
+            - "MONGODB_USER=app"
+            - "MONGODB_PASSWORD=123456"
+        volumes:
+            - mongo-data:/data/db
 
 volumes:
     pgdata:
         driver: local
     elasticsearch-data:
+        driver: local
+    mongo-data:
         driver: local
