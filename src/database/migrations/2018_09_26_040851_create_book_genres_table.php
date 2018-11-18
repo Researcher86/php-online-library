@@ -16,9 +16,9 @@ class CreateBookGenresTable extends Migration
         Schema::create('book_genres', function (Blueprint $table) {
             $table->unsignedInteger('book_id');
             $table->unsignedInteger('genre_id');
+            $table->primary(['book_id', 'genre_id']);
             $table->foreign('book_id')->references('id')->on('books')->onDelete('CASCADE');
             $table->foreign('genre_id')->references('id')->on('genres')->onDelete('CASCADE');
-            $table->unique(['book_id', 'genre_id']);
         });
     }
 

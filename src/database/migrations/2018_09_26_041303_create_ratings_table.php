@@ -17,6 +17,7 @@ class CreateRatingsTable extends Migration
             $table->unsignedInteger('book_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('rating');
+            $table->primary(['book_id', 'user_id']);
             $table->foreign('book_id')->references('id')->on('books')->onDelete('CASCADE');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
         });
