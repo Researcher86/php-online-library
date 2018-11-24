@@ -30,6 +30,13 @@ class RatingTest extends TestCase
         $this->assertNotNull($rating);
     }
 
+    public function testCreateValidRating()
+    {
+        $rating = Rating::new(5, factory(User::class)->create());
+        $this->assertNotNull($rating);
+        $this->assertNotNull($rating->user);
+    }
+
     public function testCreateValidRating_five()
     {
         $rating = Rating::new(5, factory(User::class)->create());
