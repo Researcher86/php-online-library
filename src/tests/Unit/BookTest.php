@@ -24,6 +24,8 @@ class BookTest extends TestCase
         $book->addRating(Rating::new(3, factory(User::class)->create()));
         $book->addRating(Rating::new(3, factory(User::class)->create()));
 
+        $this->assertNotNull($book->getAuthors()->get(0));
+        $this->assertNotNull($book->getGenres()->get(0));
         $this->assertEquals(11, $book->totalRating());
     }
 }
