@@ -8,38 +8,41 @@ use Tests\TestCase;
 
 class RatingTest extends TestCase
 {
-    public function testCreateInvalidRating_zero()
+    /**
+     * @dataProvider providerInvalidData
+     */
+    public function testCreateInvalidRating()
     {
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage(sprintf('Rating is not included in the range %d..%d', Rating::MIN, Rating::MAX));
-
-        Rating::create(0, factory(User::class)->create());
+        foreach (func_get_args() as $number) {
+            $this->expectException(\DomainException::class);
+            $this->expectExceptionMessage(sprintf('Rating is not included in the range %d..%d', Rating::MIN, Rating::MAX));
+            Rating::create($number, factory(User::class)->create());
+        }
     }
 
-    public function testCreateInvalidRating_six()
-    {
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage(sprintf('Rating is not included in the range %d..%d', Rating::MIN, Rating::MAX));
-
-        Rating::create(6, factory(User::class)->create());
-    }
-
-    public function testCreateValidRating_one()
-    {
-        $rating = Rating::create(1, factory(User::class)->create());
-        $this->assertNotNull($rating);
-    }
-
+    /**
+     * @dataProvider providerValidData
+     */
     public function testCreateValidRating()
     {
-        $rating = Rating::create(5, factory(User::class)->create());
-        $this->assertNotNull($rating);
-        $this->assertNotNull($rating->user);
+        foreach (func_get_args() as $number) {
+            $rating = Rating::create($number, factory(User::class)->create());
+            $this->assertNotNull($rating);
+            $this->assertNotNull($rating->user);
+        }
     }
 
-    public function testCreateValidRating_five()
+    public function providerInvalidData()
     {
-        $rating = Rating::create(5, factory(User::class)->create());
-        $this->assertNotNull($rating);
+        return [
+            [-1, 0, 6, 7],
+        ];
+    }
+
+    public function providerValidData()
+    {
+        return [
+            [1, 2, 3, 4, 5],
+        ];
     }
 }
