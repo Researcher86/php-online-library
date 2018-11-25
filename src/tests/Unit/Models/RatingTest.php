@@ -11,7 +11,7 @@ class RatingTest extends TestCase
     public function testCreateInvalidRating_zero()
     {
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Rating is not included in the range 1..5');
+        $this->expectExceptionMessage(sprintf('Rating is not included in the range %d..%d', Rating::MIN, Rating::MAX));
 
         Rating::create(0, factory(User::class)->create());
     }
@@ -19,7 +19,7 @@ class RatingTest extends TestCase
     public function testCreateInvalidRating_six()
     {
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Rating is not included in the range 1..5');
+        $this->expectExceptionMessage(sprintf('Rating is not included in the range %d..%d', Rating::MIN, Rating::MAX));
 
         Rating::create(6, factory(User::class)->create());
     }

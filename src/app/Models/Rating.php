@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rating extends Model
 {
+    const MIN = 1;
+    const MAX = 5;
+
     protected $fillable = [
         'rating', 'user_id'
     ];
@@ -15,8 +18,8 @@ class Rating extends Model
 
     public static function create(int $rating, User $user)
     {
-        if ($rating < 1 || $rating > 5) {
-            throw new \DomainException('Rating is not included in the range 1..5');
+        if ($rating < self::MIN || $rating > self::MAX) {
+            throw new \DomainException(sprintf('Rating is not included in the range %d..%d', self::MIN, self::MAX));
         }
 
         return new Rating(['rating' => $rating, 'user_id' => $user->id]);
