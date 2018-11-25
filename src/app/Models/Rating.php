@@ -13,7 +13,7 @@ class Rating extends Model
     public $timestamps = false;
     public $incrementing = false;
 
-    public static function new(int $rating, User $user)
+    public static function create(int $rating, User $user)
     {
         if ($rating < 1 || $rating > 5) {
             throw new \DomainException('Rating is not included in the range 1..5');

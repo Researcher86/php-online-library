@@ -20,9 +20,9 @@ class BookTest extends TestCase
         $book->addAuthors(factory(Author::class)->create());
         $book->addGenres(factory(Genre::class)->create());
 
-        $book->addRating(Rating::new(5, factory(User::class)->create()));
-        $book->addRating(Rating::new(3, factory(User::class)->create()));
-        $book->addRating(Rating::new(3, factory(User::class)->create()));
+        $book->addRating(Rating::create(5, factory(User::class)->create()));
+        $book->addRating(Rating::create(3, factory(User::class)->create()));
+        $book->addRating(Rating::create(3, factory(User::class)->create()));
 
         $this->assertNotNull($book->getAuthors()->get(0));
         $this->assertNotNull($book->getGenres()->get(0));

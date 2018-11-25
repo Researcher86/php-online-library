@@ -13,7 +13,7 @@ class RatingTest extends TestCase
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Rating is not included in the range 1..5');
 
-        Rating::new(0, factory(User::class)->create());
+        Rating::create(0, factory(User::class)->create());
     }
 
     public function testCreateInvalidRating_six()
@@ -21,25 +21,25 @@ class RatingTest extends TestCase
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Rating is not included in the range 1..5');
 
-        Rating::new(6, factory(User::class)->create());
+        Rating::create(6, factory(User::class)->create());
     }
 
     public function testCreateValidRating_one()
     {
-        $rating = Rating::new(1, factory(User::class)->create());
+        $rating = Rating::create(1, factory(User::class)->create());
         $this->assertNotNull($rating);
     }
 
     public function testCreateValidRating()
     {
-        $rating = Rating::new(5, factory(User::class)->create());
+        $rating = Rating::create(5, factory(User::class)->create());
         $this->assertNotNull($rating);
         $this->assertNotNull($rating->user);
     }
 
     public function testCreateValidRating_five()
     {
-        $rating = Rating::new(5, factory(User::class)->create());
+        $rating = Rating::create(5, factory(User::class)->create());
         $this->assertNotNull($rating);
     }
 }
