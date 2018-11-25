@@ -16,7 +16,7 @@ class RatingTest extends TestCase
         foreach (func_get_args() as $number) {
             $this->expectException(\DomainException::class);
             $this->expectExceptionMessage(sprintf('Rating is not included in the range %d..%d', Rating::MIN, Rating::MAX));
-            Rating::create($number, factory(User::class)->create());
+            Rating::create($number, factory(User::class)->create()->id);
         }
     }
 
@@ -26,7 +26,7 @@ class RatingTest extends TestCase
     public function testCreateValidRating()
     {
         foreach (func_get_args() as $number) {
-            $rating = Rating::create($number, factory(User::class)->create());
+            $rating = Rating::create($number, factory(User::class)->create()->id);
             $this->assertNotNull($rating);
             $this->assertNotNull($rating->user);
         }

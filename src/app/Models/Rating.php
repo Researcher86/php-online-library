@@ -16,13 +16,13 @@ class Rating extends Model
     public $timestamps = false;
     public $incrementing = false;
 
-    public static function create(int $rating, User $user)
+    public static function create(int $rating, int $userId)
     {
         if ($rating < self::MIN || $rating > self::MAX) {
             throw new \DomainException(sprintf('Rating is not included in the range %d..%d', self::MIN, self::MAX));
         }
 
-        return new Rating(['rating' => $rating, 'user_id' => $user->id]);
+        return new Rating(['rating' => $rating, 'user_id' => $userId]);
     }
 
     public function user()
