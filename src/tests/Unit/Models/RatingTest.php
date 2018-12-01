@@ -31,21 +31,21 @@ class RatingTest extends TestCase
     public function providerInvalidData()
     {
         return [
-            ' -1' => [-1],
-            ' 0' => [0],
-            ' 6' => [6],
-            ' 7' => [7],
+            [-1],
+            [0],
+            [6],
+            [7],
         ];
     }
 
     public function providerValidData()
     {
         return array(
-            ' 1' => [1],
-            ' 2' => [2],
-            ' 3' => [3],
-            ' 4' => [4],
-            ' 5' => [5],
+            [1],
+            [2],
+            [3],
+            [4],
+            [5],
         );
     }
 }
