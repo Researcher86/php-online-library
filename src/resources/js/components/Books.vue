@@ -5,6 +5,7 @@
                 <img class="card-img-top" src="/img/books/07139043.cover_250.jpg" alt="Card image cap">
                 <div class="card-body">
                     <h6 class="card-title">{{book.title.slice(0, 20)}}</h6>
+                    <star-rating class="mb-3" star-size="25" v-model="rating"></star-rating>
                     <i class="far fa-eye">12</i>
                     <a href="#"><i class="fas fa-book-open"></i></a>
                 </div>
@@ -17,7 +18,8 @@
     export default {
         data() {
             return {
-                books: []
+                books: [],
+                rating: 2
             }
         },
         created() {

@@ -14012,6 +14012,7 @@ window.Vue = __webpack_require__(37);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('star-rating', VueStarRating.default);
 Vue.component('books', __webpack_require__(40));
 Vue.component('genres', __webpack_require__(43));
 Vue.component('breadcrumb', __webpack_require__(46));
@@ -47357,11 +47358,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            books: []
+            books: [],
+            rating: 2
         };
     },
     created: function created() {
@@ -47406,15 +47409,32 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("h6", { staticClass: "card-title" }, [
-              _vm._v(_vm._s(book.title.slice(0, 20)))
-            ]),
-            _vm._v(" "),
-            _c("i", { staticClass: "far fa-eye" }, [_vm._v("12")]),
-            _vm._v(" "),
-            _vm._m(0, true)
-          ])
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            [
+              _c("h6", { staticClass: "card-title" }, [
+                _vm._v(_vm._s(book.title.slice(0, 20)))
+              ]),
+              _vm._v(" "),
+              _c("star-rating", {
+                staticClass: "mb-3",
+                attrs: { "star-size": "25" },
+                model: {
+                  value: _vm.rating,
+                  callback: function($$v) {
+                    _vm.rating = $$v
+                  },
+                  expression: "rating"
+                }
+              }),
+              _vm._v(" "),
+              _c("i", { staticClass: "far fa-eye" }, [_vm._v("12")]),
+              _vm._v(" "),
+              _vm._m(0, true)
+            ],
+            1
+          )
         ])
       ])
     })

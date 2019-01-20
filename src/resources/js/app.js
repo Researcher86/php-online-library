@@ -15,6 +15,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('star-rating', VueStarRating.default);
 Vue.component('books', require('./components/Books.vue'));
 Vue.component('genres', require('./components/Genres.vue'));
 Vue.component('breadcrumb', require('./components/Breadcrumb.vue'));
