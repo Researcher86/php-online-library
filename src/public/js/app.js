@@ -47419,7 +47419,7 @@ var render = function() {
               _vm._v(" "),
               _c("star-rating", {
                 staticClass: "mb-3",
-                attrs: { "star-size": "25" },
+                attrs: { "star-size": 25 },
                 model: {
                   value: _vm.rating,
                   callback: function($$v) {
