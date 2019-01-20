@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-3 mb-4" v-for="book in books" v-bind:key="book.id">
             <div class="card">
-                <img class="card-img-top" src="/img/books/07139043.cover_250.jpg" alt="Card image cap">
+                <img class="card-img-top" v-bind:src="images[randomImage()]" alt="Card image cap">
                 <div class="card-body">
                     <h6 class="card-title">{{book.title.slice(0, 20)}}</h6>
                     <star-rating class="mb-3" v-bind:star-size="25" v-model="rating"></star-rating>
@@ -29,6 +29,13 @@
     export default {
         data() {
             return {
+                images: [
+                    '/img/books/07139043.cover_250.jpg',
+                    '/img/books/09014102.cover_250.jpg',
+                    '/img/books/13704951.cover_250.jpg',
+                    '/img/books/26174170.cover_250.jpg',
+                    '/img/books/27385132.cover_250.jpg'
+                ],
                 books: [],
                 rating: 2,
                 pagination: {},
@@ -38,6 +45,9 @@
             this.fetchBooks();
         },
         methods: {
+            randomImage: function () {
+                return Math.floor(Math.random() * this.images.length);
+            },
             fetchBooks(page_url) {
                 let vm = this;
                 page_url = page_url || '/api/books';
