@@ -1,27 +1,3 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Laravel template
-vendor/
-node_modules/
-src/node_modules/
-npm-debug.log
-
-# Laravel 4 specific
-src/bootstrap/compiled.php
-app/storage/
-
-# Laravel 5 & Lumen specific
-src/public/storage
-src/public/hot
-src/storage/*.key
-.env.*.php
-.env.php
-.env
-Homestead.yaml
-Homestead.json
-
-# Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
-.rocketeer/
-
 storage/
 .idea/
 *.docx
