@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Genres;
+namespace App\Services\Genre;
 
 
 interface GenreServiceInterface

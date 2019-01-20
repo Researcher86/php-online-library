@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services;
 
-use App\Services\Genres\GenreService;
+use App\Services\Genre\GenreService;
 use Tests\TestCase;
 
 class GenreServiceTest extends TestCase

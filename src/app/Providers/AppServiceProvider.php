@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\Genres\GenreService;
-use App\Services\Genres\GenreServiceInterface;
+use App\Services\Book\BookService;
+use App\Services\Book\BookServiceInterface;
+use App\Services\Genre\GenreService;
+use App\Services\Genre\GenreServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(GenreServiceInterface::class, function ($app) {
             return new GenreService();
+        });
+        $this->app->singleton(BookServiceInterface::class, function ($app) {
+            return new BookService();
         });
     }
 }
