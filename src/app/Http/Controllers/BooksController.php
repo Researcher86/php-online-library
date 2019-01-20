@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\Book\BookServiceInterface;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class BooksController extends Controller
 {
@@ -25,8 +23,18 @@ class BooksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getAll()
+    public function index()
     {
-        return $this->bookService->getAll();
+        return $this->bookService->getAll(8);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
+    {
+        return $this->bookService->getById($id);
     }
 }

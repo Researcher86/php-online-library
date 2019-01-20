@@ -18,15 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-// List genres
 Route::get('genres', 'GenresController@getAll');
-// List books
-Route::get('books', 'BooksController@getAll');
-//// List single article
-//Route::get('article/{id}', 'ArticleController@show');
-//// Create new article
+Route::get('books', 'BooksController@index');
+Route::get('books/{id}', 'BooksController@show');
 //Route::post('article', 'ArticleController@store');
-//// Update article
 //Route::put('article', 'ArticleController@store');
-//// Delete article
 //Route::delete('article/{id}', 'ArticleController@destroy');

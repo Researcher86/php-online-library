@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Book
  * @package App\Models
+ * @method static findOrFail(int $id)
  */
 class Book extends Model
 {

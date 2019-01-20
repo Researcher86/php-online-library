@@ -47359,30 +47359,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             books: [],
-            rating: 2
+            rating: 2,
+            pagination: {}
         };
     },
     created: function created() {
         this.fetchBooks();
     },
 
-
     methods: {
-        fetchBooks: function fetchBooks() {
+        fetchBooks: function fetchBooks(page_url) {
             var _this = this;
 
-            fetch('api/books').then(function (res) {
+            var vm = this;
+            page_url = page_url || '/api/books';
+            fetch(page_url).then(function (res) {
                 return res.json();
             }).then(function (res) {
-                _this.books = res;
+                _this.books = res.data;
+                vm.makePagination(res);
             }).catch(function (err) {
                 return console.log(err);
             });
+        },
+        makePagination: function makePagination(res) {
+            var pagination = {
+                current_page: res.current_page,
+                last_page: res.last_page,
+                next_page_url: res.next_page_url,
+                prev_page_url: res.prev_page_url
+            };
+            this.pagination = pagination;
         }
     }
 });
@@ -47398,46 +47419,114 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "row" },
-    _vm._l(_vm.books, function(book) {
-      return _c("div", { key: book.id, staticClass: "col-3 mb-4" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("img", {
-            staticClass: "card-img-top",
-            attrs: {
-              src: "/img/books/07139043.cover_250.jpg",
-              alt: "Card image cap"
-            }
-          }),
+    [
+      _vm._l(_vm.books, function(book) {
+        return _c("div", { key: book.id, staticClass: "col-3 mb-4" }, [
+          _c("div", { staticClass: "card" }, [
+            _c("img", {
+              staticClass: "card-img-top",
+              attrs: {
+                src: "/img/books/07139043.cover_250.jpg",
+                alt: "Card image cap"
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-body" },
+              [
+                _c("h6", { staticClass: "card-title" }, [
+                  _vm._v(_vm._s(book.title.slice(0, 20)))
+                ]),
+                _vm._v(" "),
+                _c("star-rating", {
+                  staticClass: "mb-3",
+                  attrs: { "star-size": 25 },
+                  model: {
+                    value: _vm.rating,
+                    callback: function($$v) {
+                      _vm.rating = $$v
+                    },
+                    expression: "rating"
+                  }
+                }),
+                _vm._v(" "),
+                _c("i", { staticClass: "far fa-eye" }, [_vm._v("12")]),
+                _vm._v(" "),
+                _vm._m(0, true)
+              ],
+              1
+            )
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+        _c("ul", { staticClass: "pagination" }, [
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.prev_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.fetchBooks(_vm.pagination.prev_page_url)
+                    }
+                  }
+                },
+                [_vm._v("Previous")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("li", { staticClass: "page-item disabled" }, [
+            _c(
+              "a",
+              { staticClass: "page-link text-dark", attrs: { href: "#" } },
+              [
+                _vm._v(
+                  "Page " +
+                    _vm._s(_vm.pagination.current_page) +
+                    " of " +
+                    _vm._s(_vm.pagination.last_page)
+                )
+              ]
+            )
+          ]),
           _vm._v(" "),
           _c(
-            "div",
-            { staticClass: "card-body" },
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.next_page_url }]
+            },
             [
-              _c("h6", { staticClass: "card-title" }, [
-                _vm._v(_vm._s(book.title.slice(0, 20)))
-              ]),
-              _vm._v(" "),
-              _c("star-rating", {
-                staticClass: "mb-3",
-                attrs: { "star-size": 25 },
-                model: {
-                  value: _vm.rating,
-                  callback: function($$v) {
-                    _vm.rating = $$v
-                  },
-                  expression: "rating"
-                }
-              }),
-              _vm._v(" "),
-              _c("i", { staticClass: "far fa-eye" }, [_vm._v("12")]),
-              _vm._v(" "),
-              _vm._m(0, true)
-            ],
-            1
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.fetchBooks(_vm.pagination.next_page_url)
+                    }
+                  }
+                },
+                [_vm._v("Next")]
+              )
+            ]
           )
         ])
       ])
-    })
+    ],
+    2
   )
 }
 var staticRenderFns = [
