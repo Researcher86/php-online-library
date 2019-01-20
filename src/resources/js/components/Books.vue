@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row book-list">
         <div class="col-3 mb-4" v-for="book in books" v-bind:key="book.id">
             <div class="card">
                 <img class="card-img-top" v-bind:src="images[randomImage()]" alt="Card image cap">
