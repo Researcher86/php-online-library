@@ -21,7 +21,8 @@ class HomeControllerTest extends TestCase
         $response->assertSee('register');
         $response->assertSee('ru');
         $response->assertSee('en');
-        $response->assertSee('Жанры');
-        $response->assertSee('Главная');
+        $response->assertSee('<genres></genres>');
+        $response->assertSee('<breadcrumb></breadcrumb>');
+        $response->assertSee('<books></books>');
     }
 }
