@@ -6,6 +6,7 @@ use App\Services\Book\BookService;
 use App\Services\Book\BookServiceInterface;
 use App\Services\Genre\GenreService;
 use App\Services\Genre\GenreServiceInterface;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,7 +18,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (env('PHPUNIT')) {
+            DB::listen(function ($query) {
+                print_r([
+                    $query->sql,
+                    $query->bindings,
+                    $query->time
+                ]);
+            });
+        }
     }
 
     /**
