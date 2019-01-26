@@ -1,60 +1,83 @@
-## If the first argument is "run"...
-#ifeq (doctrine,$(firstword $(MAKECMDGOALS)))
-#  # use the rest as arguments for "run"
-#  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-#  # ...and turn them into do-nothing targets
-#  $(eval $(RUN_ARGS):;@true)
-#endif
+DC := docker-compose
+COMPOSER := docker-compose run composer
+ARTISAN := docker-compose run php-cli php artisan
+NODE := docker-compose run node
+PHING := docker-compose run php-cli vendor/bin/phing
+PHP := docker-compose run php-cli
 
 list:
 	grep '^[^#[:space:]].*:' Makefile
 
 up:
-	docker-compose up -d
+	$(DC) up -d
 
 build:
-	docker-compose build
+	$(DC) build
 
 remove-all:
-	docker-compose down --rmi local -v --remove-orphans
+	$(DC) down --rmi local -v --remove-orphans
 
 down:
-	docker-compose down -v --remove-orphans
+	$(DC) down -v --remove-orphans
 
 start:
-	docker-compose start
+	$(DC) start
 
 stop:
-	docker-compose stop
+	$(DC) stop
 
 restart:
-	docker-compose restart
+	$(DC) restart
 
 # make logs c=php-cli
 logs:
-	docker-compose logs $(CMD)
+	$(DC) logs $(CMD)
 
 test:
-	docker-compose run php-cli vendor/bin/phpunit
+	$(PHP) vendor/bin/phpunit
 
 composer:
-	docker-compose run composer $(CMD)
+	$(COMPOSER) $(CMD)
+	$(COMPOSER) dump-autoload -o
+
+composer-install:
+	$(COMPOSER) install
+	$(COMPOSER) dump-autoload -o
+
+composer-update:
+	$(COMPOSER) update
+	$(COMPOSER) dump-autoload -o
 
 dump-autoload:
-	docker-compose run composer dump-autoload -o
+	$(COMPOSER) dump-autoload -o
 
 phing:
-	docker-compose run php-cli vendor/bin/phing
+	$(PHING)
 
 npm-watch:
-	docker-compose run node npm run watch-poll
+	$(NODE) npm run watch-poll
+
+npm:
+	$(NODE) npm $(CMD)
+
+npm-dev:
+	$(NODE) npm run dev
+
+npm-prod:
+	$(NODE) npm run prod
+
+npm-install:
+	$(NODE) npm install
+
+npm-update:
+	$(NODE) npm update
 
 tinker:
 	# Interactive run laravel code
-	docker-compose run php-cli php artisan tinker
+	$(ARTISAN) tinker
 
 db-refresh:
-	docker-compose run php-cli php artisan refresh --seed
+	$(ARTISAN) refresh --seed
 
 artisan:
-	docker-compose run php-cli php artisan $(CMD)
+	$(ARTISAN) $(CMD)
