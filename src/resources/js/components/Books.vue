@@ -26,7 +26,20 @@
 </template>
 
 <script>
+    import StarRating from 'vue-star-rating'
     export default {
+        components: {
+            StarRating
+        },
+
+        props: ['genre'],
+
+        watch:{
+            genre: function () {
+                this.fetchBooks();
+            }
+        },
+
         data() {
             return {
                 images: [
@@ -50,7 +63,8 @@
             },
             fetchBooks(page_url) {
                 let vm = this;
-                page_url = page_url || '/api/books';
+                page_url = page_url || (this.genre ? `/api/books/genres/${this.genre}` : '/api/books');
+
                 fetch(page_url)
                     .then(res => res.json())
                     .then(res => {
