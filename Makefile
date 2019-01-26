@@ -37,8 +37,7 @@ test:
 	$(PHP) vendor/bin/phpunit
 
 composer:
-	$(COMPOSER) $(CMD)
-	$(COMPOSER) dump-autoload -o
+	$(COMPOSER) sh
 
 composer-install:
 	$(COMPOSER) install
@@ -58,7 +57,7 @@ npm-watch:
 	$(NODE) npm run watch-poll
 
 npm:
-	$(NODE) npm $(CMD)
+	$(NODE) sh
 
 npm-dev:
 	$(NODE) npm run dev
