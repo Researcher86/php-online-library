@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('genres', 'GenresController@getAll');
 Route::get('books', 'BooksController@index');
+Route::get('books/genres/{id}', 'BooksController@getBooksByGenre');
 Route::get('books/{id}', 'BooksController@show');
 //Route::post('article', 'ArticleController@store');
 //Route::put('article', 'ArticleController@store');

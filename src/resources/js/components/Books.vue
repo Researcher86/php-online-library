@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12" v-if="pagination.last_page > 1">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end">
                     <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link" href="#" @click="fetchBooks(pagination.prev_page_url)">Previous</a></li>

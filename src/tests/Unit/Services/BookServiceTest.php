@@ -17,4 +17,11 @@ class BookServiceTest extends TestCase
     {
         $this->assertNotEmpty((new BookService())->getById(1));
     }
+
+    public function testGetBooksByGenre()
+    {
+        $books = (new BookService())->getBooksByGenre(1);
+        self::assertNotNull($books);
+        self::assertEquals(1, $books->count());
+    }
 }

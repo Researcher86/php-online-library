@@ -15,6 +15,11 @@ class BookService implements BookServiceInterface
 
     public function getById(int $id): Book
     {
-        return Book::findOrFail($id)->first();
+        return Book::findOrFail($id);
+    }
+
+    public function getBooksByGenre(int $genreId, int $size = 8)
+    {
+        return Book::findByGenre($genreId)->paginate($size);
     }
 }

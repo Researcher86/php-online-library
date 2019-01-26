@@ -25,7 +25,7 @@ class BooksController extends Controller
      */
     public function index()
     {
-        return $this->bookService->getAll(8);
+        return $this->bookService->getAll();
     }
 
     /**
@@ -36,5 +36,15 @@ class BooksController extends Controller
     public function show(int $id)
     {
         return $this->bookService->getById($id);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getBooksByGenre(int $id)
+    {
+        return $this->bookService->getBooksByGenre($id);
     }
 }

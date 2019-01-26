@@ -6,7 +6,7 @@
 
                 <div class="card-body">
                     <div v-for="genre in genres" v-bind:key="genre.id">
-                        <a href="#" v-on:click="selectGenre(genre.id)">{{genre.name}}</a>
+                        <a href="javascript:void(0)" v-on:click="selectGenre(genre.id)">{{genre.name}}</a>
                     </div>
 
                 </div>
