@@ -45,13 +45,6 @@ class Book extends Model
         return $this->ratings()->sum('rating');
     }
 
-    public static function findByGenre(int $genreId)
-    {
-        return Book::whereHas('books', function ($query) use ($genreId) {
-            $query->where('book_genres.genre_id', '=', $genreId);
-        });
-    }
-
     public function authors()
     {
         return $this->belongsToMany(Author::class, 'book_authors', 'book_id', 'author_id');
@@ -60,11 +53,6 @@ class Book extends Model
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'book_genres', 'book_id', 'genre_id');
-    }
-
-    public function books()
-    {
-        return $this->belongsToMany(Book::class, 'book_genres', 'book_id', 'genre_id');
     }
 
     public function ratings()

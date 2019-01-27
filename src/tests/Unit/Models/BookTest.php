@@ -29,14 +29,4 @@ class BookTest extends TestCase
         self::assertEquals(11, $book->totalRating());
     }
 
-    public function testFindByGenre()
-    {
-        Book::findOrFail(1)->addGenre(Genre::findOrFail(2));
-        Book::findOrFail(2)->addGenre(Genre::findOrFail(2));
-
-        $books = Book::findByGenre(2);
-        self::assertNotNull($books);
-        self::assertEquals(2, $books->count());
-    }
-
 }

@@ -4,6 +4,7 @@ namespace App\Services\Book;
 
 
 use App\Models\Book;
+use App\Models\Genre;
 
 class BookService implements BookServiceInterface
 {
@@ -20,6 +21,6 @@ class BookService implements BookServiceInterface
 
     public function getBooksByGenre(int $genreId, int $size = 8)
     {
-        return Book::findByGenre($genreId)->paginate($size);
+        return Genre::findOrFail($genreId)->books()->paginate($size);
     }
 }
