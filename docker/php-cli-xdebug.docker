@@ -1,9 +1,9 @@
 FROM php:7.2-cli
 
-RUN apt-get update && apt-get install -y libmcrypt-dev libpq-dev \
+RUN apt-get update && apt-get install -y libmcrypt-dev libpq-dev librabbitmq-dev \
     && docker-php-ext-install pdo pdo_pgsql pcntl \
     # install xdebug
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug
+    && pecl install xdebug amqp \
+    && docker-php-ext-enable xdebug amqp
 
 WORKDIR /var/www

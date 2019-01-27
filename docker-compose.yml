@@ -98,6 +98,15 @@ services:
         volumes:
             - mongo-data:/data/db
 
+    rabbitmq:
+        image: rabbitmq:3.6.15-management
+        environment:
+            - "RABBITMQ_DEFAULT_USER=app"
+            - "RABBITMQ_DEFAULT_PASS=123456"
+        ports:
+            - "5672:5672"
+            - "15672:15672" # http://localhost:15672
+
 volumes:
     pgdata:
         driver: local
