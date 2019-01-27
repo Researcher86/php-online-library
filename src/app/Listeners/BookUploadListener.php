@@ -4,22 +4,18 @@ namespace App\Listeners;
 
 use App\Events\BookUploadEvent;
 use App\Services\Queue\QueueServiceInterface;
+use Bschmitt\Amqp\Facades\Amqp;
 
 class BookUploadListener
 {
-    /**
-     * @var QueueServiceInterface
-     */
-    private $queueService;
-
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(QueueServiceInterface $queueService)
+    public function __construct()
     {
-        $this->queueService = $queueService;
+
     }
 
     /**
@@ -30,6 +26,6 @@ class BookUploadListener
      */
     public function handle(BookUploadEvent $event)
     {
-        $this->queueService->produce($event, ['routing_key' => 'log.info']);
+        Amqp::publish(/*'book.upload'*/'', json_encode($event), ['queue' => 'book-upload']);
     }
 }

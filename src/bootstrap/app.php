@@ -52,4 +52,7 @@ $app->singleton(
 |
 */
 
+$app->configPath('amqp');
+$app->register(Bschmitt\Amqp\LumenServiceProvider::class);
+
 return $app;

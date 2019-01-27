@@ -48,18 +48,5 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(BookServiceInterface::class, function ($app) {
             return new BookService();
         });
-
-        $this->app->singleton(QueueServiceInterface::class, function ($app) {
-            return new RabbitQueueService(
-                env('RABBIT_HOST'),
-                env('RABBIT_VHOST'),
-                env('RABBIT_PORT'),
-                env('RABBIT_LOGIN'),
-                env('RABBIT_PASSWORD'),
-                'message-exchange',
-                'log.info',
-                'log.info'
-            );
-        });
     }
 }
