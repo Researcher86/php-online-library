@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class HomeControllerTest extends TestCase
+class HomePageTest extends TestCase
 {
     /**
      * A basic test example.
