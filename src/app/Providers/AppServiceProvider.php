@@ -50,28 +50,16 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(QueueServiceInterface::class, function ($app) {
-            $conn = new AMQPConnection([
-                'host' => env('RABBIT_HOST'),
-                'vhost' => env('RABBIT_VHOST'),
-                'port' => env('RABBIT_PORT'),
-                'login' => env('RABBIT_LOGIN'),
-                'password' => env('RABBIT_PASSWORD')
-            ]);
-            $conn->connect();
-
-            $channel = new AMQPChannel($conn);
-            $exchange = new AMQPExchange($channel);
-            $exchange->setName('message-exchange');
-            $exchange->setType(AMQP_EX_TYPE_DIRECT);
-            //$exchange->setFlags(AMQP_DURABLE);
-            $exchange->declareExchange();
-
-            $queue = new AMQPQueue($channel);
-            $queue->setName("log-info");
-            $queue->declareQueue();
-            $queue->bind($exchange->getName(), 'log.info');
-
-            return new RabbitQueueService($exchange, $queue);
+            return new RabbitQueueService(
+                env('RABBIT_HOST'),
+                env('RABBIT_VHOST'),
+                env('RABBIT_PORT'),
+                env('RABBIT_LOGIN'),
+                env('RABBIT_PASSWORD'),
+                'message-exchange',
+                'log.info',
+                'log.info'
+            );
         });
     }
 }

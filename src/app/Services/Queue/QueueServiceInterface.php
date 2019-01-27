@@ -11,7 +11,7 @@ namespace App\Services\Queue;
 
 interface QueueServiceInterface
 {
-    public function produce($data, array $params);
+    public function produce($data);
 
     public function consume(callable $fun);
 }
