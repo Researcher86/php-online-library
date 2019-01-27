@@ -35,7 +35,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'stdout'],
         ],
 
         'single' => [
@@ -64,6 +64,14 @@ return [
             'handler' => StreamHandler::class,
             'with' => [
                 'stream' => 'php://stderr',
+            ],
+        ],
+
+        'stdout' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'with' => [
+                'stream' => 'php://stdout',
             ],
         ],
 

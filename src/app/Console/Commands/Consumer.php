@@ -30,7 +30,7 @@ class Consumer extends Command
     public function __construct()
     {
         parent::__construct();
-        Log::debug("Consumer created\n");
+        Log::debug("Consumer created");
     }
 
     /**
@@ -40,9 +40,9 @@ class Consumer extends Command
      */
     public function handle()
     {
-        Log::debug("Consumer handler\n");
+        Log::debug("Consumer handler");
         Amqp::consume('book-upload', function ($message, $resolver) {
-            Log::debug($message->body . PHP_EOL);
+            Log::debug($message->body);
 
             $resolver->acknowledge($message);
         });
