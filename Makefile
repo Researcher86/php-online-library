@@ -103,4 +103,5 @@ artisan:
 #      make:test
 #   ./artisan make:event UserLoginEvent
 #	./artisan make:listener UserEventSubscriber
+#   ./artisan command:consumer
 	$(PHP) bash
