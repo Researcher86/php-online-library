@@ -77,7 +77,10 @@ tinker:
 	$(ARTISAN) tinker
 
 db-refresh:
-	$(ARTISAN) refresh --seed
+	$(ARTISAN) migrate:refresh -n --force
+
+db-refresh-seed:
+	$(ARTISAN) migrate:refresh --seed -n --force
 
 nginx:
 	$(NGINX) bash
