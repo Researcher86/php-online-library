@@ -16,11 +16,12 @@ class BooksTableSeeder extends Seeder
             $json = json_decode(file_get_contents($jsonFile));
 
             $jsonFile = str_replace(__DIR__ . '/books/', '', $jsonFile);
+
             preg_match('/(.*?)\/(.*?)\//', $jsonFile, $matches);
-            $genreName = $matches[1];
-            $bookName = $matches[2];
-            $authorName = $json[2];
-            $anotation = $json[3];
+            $genreName = $this->replaceSymbols($matches[1]);
+            $bookName = $this->replaceSymbols($matches[2]);
+            $authorName = $this->replaceSymbols($json[2]);
+            $annotation = $this->replaceSymbols($json[3]);
             $imageName = basename($json[0]);
 
             $sourceDir = __DIR__ . '/books/' . dirname($jsonFile) . '/' . $imageName;
@@ -29,7 +30,7 @@ class BooksTableSeeder extends Seeder
                 mkdir($destDir, 0777, true);
             }
             @copy(
-                __DIR__ . '/books/' . dirname($jsonFile) . '/' . $imageName,
+                $sourceDir,
                 $destDir . '/' . $imageName
             );
 
@@ -38,10 +39,15 @@ class BooksTableSeeder extends Seeder
             $image = Image::firstOrCreate(['file' => '/files/' . date('Y-m-d') . '/books/' . $bookId . '/' . $imageName]);
 
             /** @var Book $book */
-            $book = Book::create(['title' => $bookName, 'annotation' => $anotation]);
+            $book = Book::create(['title' => $bookName, 'annotation' => $annotation]);
             $book->addGenre($genre);
             $book->addAuthor($author);
             $book->addImage($image);
         }
+    }
+
+    private function replaceSymbols(string $string)
+    {
+        return preg_replace('/«|»/s', '"', $string);
     }
 }
