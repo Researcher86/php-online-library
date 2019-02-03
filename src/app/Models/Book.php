@@ -75,4 +75,12 @@ class Book extends Model
     {
         return $this->belongsToMany(Image::class, 'book_images', 'book_id', 'image_id');
     }
+
+    public function toArray()
+    {
+        $data = parent::toArray();
+        $data['image'] = $this->images()->first()->file;
+
+        return $data;
+    }
 }

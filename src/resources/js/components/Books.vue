@@ -2,7 +2,7 @@
     <div class="row book-list">
         <div class="col-3 mb-4" v-for="book in books" v-bind:key="book.id">
             <div class="card">
-                <img class="card-img-top" v-bind:src="images[randomImage()]" alt="Card image cap">
+                <img class="card-img-top" :src="book.image" :alt="book.title">
                 <div class="card-body">
                     <h6 class="card-title">{{book.title.slice(0, 20)}}</h6>
                     <star-rating class="mb-3" v-bind:star-size="25" v-model="rating"></star-rating>
@@ -14,11 +14,11 @@
         <div class="col-12" v-if="pagination.last_page > 1">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end">
-                    <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link" href="#" @click="fetchBooks(pagination.prev_page_url)">Previous</a></li>
+                    <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link" href="javascript:void(0)" @click="fetchBooks(pagination.prev_page_url)">Previous</a></li>
 
                     <li class="page-item disabled"><a class="page-link text-dark" href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
 
-                    <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item"><a class="page-link" href="#" @click="fetchBooks(pagination.next_page_url)">Next</a></li>
+                    <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item"><a class="page-link" href="javascript:void(0)" @click="fetchBooks(pagination.next_page_url)">Next</a></li>
                 </ul>
             </nav>
         </div>
@@ -42,13 +42,6 @@
 
         data() {
             return {
-                images: [
-                    '/img/books/07139043.cover_250.jpg',
-                    '/img/books/09014102.cover_250.jpg',
-                    '/img/books/13704951.cover_250.jpg',
-                    '/img/books/26174170.cover_250.jpg',
-                    '/img/books/27385132.cover_250.jpg'
-                ],
                 books: [],
                 rating: 2,
                 pagination: {},
@@ -58,9 +51,6 @@
             this.fetchBooks();
         },
         methods: {
-            randomImage: function () {
-                return Math.floor(Math.random() * this.images.length);
-            },
             fetchBooks(page_url) {
                 let vm = this;
                 page_url = page_url || (this.genre ? `/api/books/genres/${this.genre}` : '/api/books');
