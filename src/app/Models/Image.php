@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static firstOrCreate(array $array)
  */
-class Author extends Model
+class Image extends Model
 {
     protected $fillable = [
-        'name',
+        'file',
     ];
 
     public $timestamps = false;

@@ -16,12 +16,9 @@ class GenreTest extends TestCase
 
     public function testFindByGenre()
     {
-        Book::findOrFail(1)->addGenre(Genre::findOrFail(2));
-        Book::findOrFail(2)->addGenre(Genre::findOrFail(2));
-
         $books = Genre::findOrFail(2)->books()->paginate(8);
         self::assertNotNull($books);
-        self::assertEquals(2, $books->count());
+        self::assertEquals(8, $books->count());
     }
 
 }

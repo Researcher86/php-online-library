@@ -13,11 +13,8 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\Book::class, function (Faker $faker) {
+$factory->define(App\Models\Image::class, function (Faker $faker) {
     return [
-        'title' => $faker->title,
-        'annotation' => $faker->text,
-        'page_count' => $faker->numberBetween(),
-        'file' => str_random(255),
+        'file' => $faker->url
     ];
 });

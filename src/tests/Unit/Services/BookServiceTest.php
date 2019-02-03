@@ -22,6 +22,6 @@ class BookServiceTest extends TestCase
     {
         $books = (new BookService())->getBooksByGenre(1);
         self::assertNotNull($books);
-        self::assertEquals(1, $books->count());
+        self::assertEquals(8, $books->count());
     }
 }

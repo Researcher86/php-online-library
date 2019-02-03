@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBookImagesTable extends Migration
+class CreateImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateBookImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('book_images', function (Blueprint $table) {
-            $table->unsignedInteger('book_id');
-            $table->string('image');
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('CASCADE');
+        Schema::create('images', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('file')->nullable();
         });
     }
 
@@ -27,6 +26,6 @@ class CreateBookImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_images');
+        Schema::dropIfExists('images');
     }
 }

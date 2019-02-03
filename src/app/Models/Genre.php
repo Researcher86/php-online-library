@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static findOrFail(int $int)
+ * @method static firstOrCreate(array $array)
  */
 class Genre extends Model
 {
