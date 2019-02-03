@@ -19,6 +19,6 @@ Auth::routes();
 
 Route::get('/', function () {
     event(new \App\Events\BookUploadEvent(\App\Models\Book::findOrFail(1)));
-    Log::info($_SERVER['HTTP_USER_AGENT']);
+    Log::info($_SERVER['HTTP_USER_AGENT'] ?? '');
     return view('home');
 });
