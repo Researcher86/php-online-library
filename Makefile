@@ -4,6 +4,7 @@ ARTISAN := docker-compose run php-cli php artisan
 NODE := docker-compose run node
 PHING := docker-compose run php-cli vendor/bin/phing
 PHP := docker-compose run php-cli
+NGINX := docker-compose exec nginx
 
 list:
 	grep '^[^#[:space:]].*:' Makefile
@@ -77,6 +78,12 @@ tinker:
 
 db-refresh:
 	$(ARTISAN) refresh --seed
+
+nginx:
+	$(NGINX) bash
+
+nginx-reload:
+	$(NGINX) nginx -s reload
 
 artisan:
 #      make:auth
