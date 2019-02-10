@@ -13,6 +13,14 @@ class BooksTableSeeder extends Seeder
 {
     public function run()
     {
+        $dirFiles = __DIR__ . '/../../storage/app/public/files/';
+
+        if (PHP_OS === 'Windows' && file_exists($dirFiles)) {
+            exec(sprintf("rd /s /q %s", escapeshellarg($dirFiles)));
+        } else {
+            exec(sprintf("rm -rf %s", escapeshellarg($dirFiles)));
+        }
+
         $user = User::take(1)->first();
         foreach (glob(__DIR__ . '/books/*/*/*.json') as $jsonFile) {
             $bookId = microtime();
@@ -28,7 +36,7 @@ class BooksTableSeeder extends Seeder
             $imageName = basename($json[0]);
 
             $sourceDir = __DIR__ . '/books/' . dirname($jsonFile) . '/' . $imageName;
-            $destDir = __DIR__ . '/../../storage/app/public/files/' . date('Y-m-d') . '/books/' . $bookId;
+            $destDir = $dirFiles . date('Y-m-d') . '/books/' . $bookId;
             if (!file_exists($destDir)) {
                 mkdir($destDir, 0777, true);
             }
