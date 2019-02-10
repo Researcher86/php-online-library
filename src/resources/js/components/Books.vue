@@ -59,13 +59,12 @@
                     .catch(err => console.log(err));
             },
             fetchBooks(page_url) {
-                let vm = this;
                 page_url = page_url || (this.genre ? `/api/books/genres/${this.genre}` : '/api/books');
 
                 axios.get(page_url)
                     .then(res => {
                         this.books = res.data.data;
-                        vm.makePagination(res);
+                        this.makePagination(res.data);
                     })
                     .catch(err => console.log(err));
             },
