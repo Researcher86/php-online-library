@@ -12,4 +12,6 @@ interface BookServiceInterface
     public function getById(int $id): Book;
 
     public function getBooksByGenre(int $genreId, int $size);
+
+    public function addRating(int $userId, int $bookId, int $rating): float;
 }

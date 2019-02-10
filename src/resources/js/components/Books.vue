@@ -52,7 +52,11 @@
         },
         methods: {
             setRating: function(rating, book){
-                // axios.post
+                axios.post(`api/books/${book.id}/rating/${rating}`)
+                    .then(res => {
+                        book.rating = res.data;
+                    })
+                    .catch(err => console.log(err));
             },
             fetchBooks(page_url) {
                 let vm = this;

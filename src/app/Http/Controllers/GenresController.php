@@ -27,6 +27,8 @@ class GenresController extends Controller
      */
     public function getAll()
     {
-        return $this->genreService->getAll();
+        return response(
+            $this->genreService->getAll()
+        );
     }
 }

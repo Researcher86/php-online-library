@@ -36,6 +36,11 @@ class Book extends Model
         return $this->images()->get();
     }
 
+    public function getRatings()
+    {
+        return $this->ratings()->get();
+    }
+
     public function addGenre(Genre $genre)
     {
         return $this->genres()->attach($genre);
@@ -51,9 +56,11 @@ class Book extends Model
         return $this->ratings()->save($rating);
     }
 
-    public function totalRating()
+    public function calculateRatingAverage()
     {
-        return $this->ratings()->sum('rating');
+        $average = $this->ratings()->average('rating');
+        $mult = pow(10, 2);
+        return ceil($average * $mult) / $mult;
     }
 
     public function authors()
@@ -80,7 +87,7 @@ class Book extends Model
     {
         $data = parent::toArray();
         $data['image'] = $this->images()->first()->file;
-        $data['rating'] = $this->totalRating();
+        $data['rating'] = $this->calculateRatingAverage();
 
         return $data;
     }

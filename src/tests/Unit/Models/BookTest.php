@@ -23,13 +23,33 @@ class BookTest extends TestCase
         $book->addImage(factory(Image::class)->create());
 
         $book->addRating(Rating::create(5, factory(User::class)->create()->id));
-        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
-        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
 
         self::assertNotNull($book->getAuthors()->get(0));
         self::assertNotNull($book->getGenres()->get(0));
         self::assertNotNull($book->getImages()->get(0));
-        self::assertEquals(11, $book->totalRating());
+        self::assertNotNull($book->getRatings()->get(0));
+    }
+
+    public function testCalculateRatingAverage()
+    {
+        /** @var Book $book */
+        $book = factory(Book::class)->create();
+        self::assertNotNull($book);
+
+        $book->addRating(Rating::create(5, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(5, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(5, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(4, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(3, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(2, factory(User::class)->create()->id));
+        $book->addRating(Rating::create(1, factory(User::class)->create()->id));
+
+        self::assertEquals(3.34, $book->calculateRatingAverage());
     }
 
 }

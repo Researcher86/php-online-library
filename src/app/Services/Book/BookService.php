@@ -5,6 +5,7 @@ namespace App\Services\Book;
 
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\Rating;
 
 class BookService implements BookServiceInterface
 {
@@ -22,5 +23,13 @@ class BookService implements BookServiceInterface
     public function getBooksByGenre(int $genreId, int $size = 8)
     {
         return Genre::findOrFail($genreId)->books()->paginate($size);
+    }
+
+    public function addRating(int $userId, int $bookId, int $rating): float
+    {
+        /** @var Book $book */
+        $book = Book::findOrFail($bookId);
+        $book->addRating(Rating::create($rating, $userId));
+        return $book->calculateRatingAverage();
     }
 }
