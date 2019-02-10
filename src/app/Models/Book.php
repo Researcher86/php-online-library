@@ -80,6 +80,7 @@ class Book extends Model
     {
         $data = parent::toArray();
         $data['image'] = $this->images()->first()->file;
+        $data['rating'] = $this->totalRating();
 
         return $data;
     }

@@ -4,6 +4,8 @@ use App\Models\Book;
 use App\Models\Genre;
 use App\Models\Author;
 use \App\Models\Image;
+use App\Models\Rating;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,6 +13,7 @@ class BooksTableSeeder extends Seeder
 {
     public function run()
     {
+        $user = User::take(1)->first();
         foreach (glob(__DIR__ . '/books/*/*/*.json') as $jsonFile) {
             $bookId = microtime();
             $json = json_decode(file_get_contents($jsonFile));
@@ -43,6 +46,7 @@ class BooksTableSeeder extends Seeder
             $book->addGenre($genre);
             $book->addAuthor($author);
             $book->addImage($image);
+            $book->addRating(Rating::create(random_int(1, 5), $user->id));
         }
     }
 

@@ -5,7 +5,7 @@
                 <img class="card-img-top" :src="book.image" :alt="book.title">
                 <div class="card-body">
                     <h6 class="card-title">{{book.title.slice(0, 20)}}</h6>
-                    <star-rating class="mb-3" v-bind:star-size="25" v-model="rating"></star-rating>
+                    <star-rating class="mb-3" v-bind:show-rating="false" v-bind:star-size="25" v-model="book.rating" @rating-selected="setRating($event, book)"></star-rating>
                     <i class="far fa-eye">12</i>
                     <a href="#"><i class="fas fa-book-open"></i></a>
                 </div>
@@ -43,7 +43,7 @@
         data() {
             return {
                 books: [],
-                rating: 2,
+                rating: 0,
                 pagination: {},
             }
         },
@@ -51,6 +51,9 @@
             this.fetchBooks();
         },
         methods: {
+            setRating: function(rating, book){
+                // axios.post
+            },
             fetchBooks(page_url) {
                 let vm = this;
                 page_url = page_url || (this.genre ? `/api/books/genres/${this.genre}` : '/api/books');
