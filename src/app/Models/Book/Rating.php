@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Book;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Rating extends Model

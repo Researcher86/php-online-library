@@ -3,7 +3,7 @@
 namespace App\Services\Book;
 
 
-use App\Models\Book;
+use App\Models\Book\Book;
 
 interface BookServiceInterface
 {

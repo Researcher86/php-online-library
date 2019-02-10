@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Book;
 
-use App\Services\Genre\GenreServiceInterface;
+use App\Http\Controllers\Controller;
+use App\Services\Book\GenreServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 

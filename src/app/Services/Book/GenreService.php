@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Genre;
+namespace App\Services\Book;
 
 
-use App\Models\Genre;
+use App\Models\Book\Genre;
 
 class GenreService implements GenreServiceInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Book;
-use App\Models\Genre;
-use App\Models\Author;
-use \App\Models\Image;
-use App\Models\Rating;
+use App\Models\Book\Book;
+use App\Models\Book\Genre;
+use App\Models\Book\Author;
+use App\Models\Book\Image;
+use App\Models\Book\Rating;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

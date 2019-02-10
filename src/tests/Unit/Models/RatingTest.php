@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Rating;
+use App\Models\Book\Rating;
 use App\Models\User;
 use Tests\TestCase;
 

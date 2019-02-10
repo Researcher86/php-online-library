@@ -18,11 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::get('genres', 'GenresController@getAll');
-Route::get('books', 'BooksController@index');
-Route::get('books/genres/{id}', 'BooksController@getBooksByGenre');
-Route::get('books/{id}', 'BooksController@show');
-Route::post('books/{bookId}/rating/{rating}', 'BooksController@addRating');
+Route::get('genres', 'Book\GenresController@getAll');
+Route::get('books', 'Book\BooksController@index');
+Route::get('books/genres/{id}', 'Book\BooksController@getBooksByGenre');
+Route::get('books/{id}', 'Book\BooksController@show');
+Route::post('books/{bookId}/rating/{rating}', 'Book\BooksController@addRating');
 //Route::post('article', 'ArticleController@store');
 //Route::put('article', 'ArticleController@store');
 //Route::delete('article/{id}', 'ArticleController@destroy');

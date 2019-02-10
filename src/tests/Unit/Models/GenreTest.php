@@ -2,8 +2,7 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Book;
-use App\Models\Genre;
+use App\Models\Book\Genre;
 use Tests\TestCase;
 
 class GenreTest extends TestCase

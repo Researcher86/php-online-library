@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\Genre::class, function (Faker $faker) {
+$factory->define(App\Models\Book\Genre::class, function (Faker $faker) {
     return [
         'name' => $faker->title
     ];

@@ -3,9 +3,9 @@
 namespace App\Services\Book;
 
 
-use App\Models\Book;
-use App\Models\Genre;
-use App\Models\Rating;
+use App\Models\Book\Book;
+use App\Models\Book\Genre;
+use App\Models\Book\Rating;
 
 class BookService implements BookServiceInterface
 {

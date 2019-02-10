@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Author;
+use App\Models\Book\Author;
 use Tests\TestCase;
 
 class AuthorTest extends TestCase

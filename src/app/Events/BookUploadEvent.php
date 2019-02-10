@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Book;
+use App\Models\Book\Book;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
