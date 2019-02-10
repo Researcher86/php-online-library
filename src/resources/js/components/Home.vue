@@ -42,10 +42,9 @@
 
         methods: {
             fetchGenres() {
-                fetch('api/genres')
-                    .then(res => res.json())
+                axios.get('api/genres')
                     .then(res => {
-                        this.genres = res;
+                        this.genres = res.data;
                         this.loading = false;
                     })
                     .catch(err => console.log(err));

@@ -58,10 +58,9 @@
                 let vm = this;
                 page_url = page_url || (this.genre ? `/api/books/genres/${this.genre}` : '/api/books');
 
-                fetch(page_url)
-                    .then(res => res.json())
+                axios.get(page_url)
                     .then(res => {
-                        this.books = res.data;
+                        this.books = res.data.data;
                         vm.makePagination(res);
                     })
                     .catch(err => console.log(err));
