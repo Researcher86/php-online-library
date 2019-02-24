@@ -14,6 +14,7 @@ class BooksTableSeeder extends Seeder
     public function run()
     {
         $dirFiles = __DIR__ . '/../../storage/app/public/files/';
+//        $books = [];
 
         if (PHP_OS === 'Windows' && file_exists($dirFiles)) {
             exec(sprintf("rd /s /q %s", escapeshellarg($dirFiles)));
@@ -34,6 +35,8 @@ class BooksTableSeeder extends Seeder
             $authorName = $this->replaceSymbols($json[2]);
             $annotation = $this->replaceSymbols($json[3]);
             $imageName = basename($json[0]);
+
+//            $books[] = ['genre' => $genreName, 'name' => $bookName, 'author' => $authorName, 'annotation' =>$annotation];
 
             $sourceDir = __DIR__ . '/books/' . dirname($jsonFile) . '/' . $imageName;
             $destDir = $dirFiles . date('Y-m-d') . '/books/' . $bookId;
@@ -56,6 +59,8 @@ class BooksTableSeeder extends Seeder
             $book->addImage($image);
             $book->addRating(Rating::create(random_int(1, 5), $user->id));
         }
+
+//        file_put_contents(__DIR__ . '/books.json', json_encode($books, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
 
     private function replaceSymbols(string $string)

@@ -16,6 +16,7 @@ class GenresControllerTest extends TestCase
     {
         $response = $this->get('/api/genres');
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJsonCount(25);
     }
 }
