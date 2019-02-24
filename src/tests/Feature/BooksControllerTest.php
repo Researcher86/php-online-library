@@ -21,7 +21,7 @@ class BooksControllerTest extends TestCase
         $response = $this->json('GET', '/api/books/1');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(1, 'data');
+                 ->assertJsonFragment(['title' => '12 встреч, меняющих судьбу. Практики Мастера']);
     }
 
     public function testGetByGenre()
@@ -34,7 +34,7 @@ class BooksControllerTest extends TestCase
 
     public function testAddRating()
     {
-        $response = $this->json('GET', '/api/books/1/rating/5');
+        $response = $this->json('POST', '/api/books/1/rating/5');
 
         $response->assertStatus(200);
     }
