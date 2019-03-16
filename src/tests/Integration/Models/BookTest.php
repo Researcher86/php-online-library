@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Integration\Models;
 
 use App\Models\Book\Author;
 use App\Models\Book\Book;
