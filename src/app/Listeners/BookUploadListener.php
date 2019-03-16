@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\BookUploadEvent;
 use App\Services\Queue\QueueServiceInterface;
-use Bschmitt\Amqp\Facades\Amqp;
 
 class BookUploadListener
 {
@@ -26,6 +25,6 @@ class BookUploadListener
      */
     public function handle(BookUploadEvent $event)
     {
-        Amqp::publish(/*'book.upload'*/'', json_encode($event), ['queue' => 'book-upload']);
+//        Amqp::publish(/*'book.upload'*/'', json_encode($event), ['queue' => 'book-upload']);
     }
 }
