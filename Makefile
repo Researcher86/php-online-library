@@ -111,4 +111,9 @@ php-cli:
 #   ./artisan make:event UserLoginEvent
 #	./artisan make:listener UserEventSubscriber
 #   ./artisan command:consumer
+#   ./artisan optimize
+#   ./artisan cache:clear
+#   ./artisan route:cache
+#   ./artisan view:clear
+#   ./artisan config:cache
 	$(PHP) bash

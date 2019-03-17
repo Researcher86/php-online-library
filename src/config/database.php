@@ -124,4 +124,8 @@ return [
 
     ],
 
+    'elasticsearch' => [
+        'host' => env('ELASTIC_SEARCH_HOST')
+    ],
+
 ];

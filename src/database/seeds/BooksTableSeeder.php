@@ -22,6 +22,7 @@ class BooksTableSeeder extends Seeder
             exec(sprintf("rm -rf %s", escapeshellarg($dirFiles)));
         }
 
+        $indexBookService = new ElasticBookService();
         $user = User::take(1)->first();
         foreach (glob(__DIR__ . '/books/*/*/*.json') as $jsonFile) {
             $bookId = microtime();

@@ -6,9 +6,12 @@ use App\Services\Book\BookService;
 use App\Services\Book\BookServiceInterface;
 use App\Services\Book\GenreService;
 use App\Services\Book\GenreServiceInterface;
+use App\Services\Index\Elastic\ElasticIndexBookService;
+use App\Services\Index\IndexBookServiceInterface;
 use App\Services\Queue\AMQP\AmqpBuilder;
 use App\Services\Queue\AMQP\AmqpService;
 use App\Services\Queue\QueueServiceInterface;
+use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
@@ -60,6 +63,14 @@ class AppServiceProvider extends ServiceProvider
                     config('queue.connections.amqp.exchange'),
                     config('queue.connections.amqp.exchange_type')
                 )
+            );
+        });
+
+        $this->app->singleton(IndexBookServiceInterface::class, function ($app) {
+            return new ElasticIndexBookService(
+                ClientBuilder::create()->setHosts([
+                    config('database.elasticsearch.host')
+                ])->build()
             );
         });
     }
