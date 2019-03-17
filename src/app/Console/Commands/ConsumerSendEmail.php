@@ -47,8 +47,8 @@ class ConsumerSendEmail extends Command
         Log::debug("Consumer Send Email run");
 
         $this->queueService->consume(
-            config('amqp.queues.notifications.email.name'),
-            config('amqp.queues.notifications.email.routing_key'),
+            config('queue.connections.amqp.queues.notifications.email.name'),
+            config('queue.connections.amqp.queues.notifications.email.routing_key'),
             true,
             function ($data) {
                 Log::info('Send Email: ' . $data);

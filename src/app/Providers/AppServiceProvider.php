@@ -42,24 +42,23 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GenreServiceInterface::class, function ($app) {
             return new GenreService();
         });
+
         $this->app->singleton(BookServiceInterface::class, function ($app) {
             return new BookService();
         });
 
         $this->app->singleton(QueueServiceInterface::class, function ($app) {
             /** @var \Illuminate\Foundation\Application $app */
-
-
             return new AmqpService(
                 AmqpBuilder::connect(
-                    config('amqp.connection.host'),
-                    config('amqp.connection.vhost'),
-                    config('amqp.connection.port'),
-                    config('amqp.connection.login'),
-                    config('amqp.connection.password')
+                    config('queue.connections.amqp.host'),
+                    config('queue.connections.amqp.vhost'),
+                    config('queue.connections.amqp.port'),
+                    config('queue.connections.amqp.login'),
+                    config('queue.connections.amqp.password')
                 )->exchange(
-                    config('amqp.connection.exchange'),
-                    config('amqp.connection.exchange_type')
+                    config('queue.connections.amqp.exchange'),
+                    config('queue.connections.amqp.exchange_type')
                 )
             );
         });

@@ -2,31 +2,22 @@
 
 namespace Tests\Integration\Service\Queue\AMQP;
 
-use App\Services\Queue\AMQP\AmqpBuilder;
-use App\Services\Queue\AMQP\AmqpService;
+use App\Services\Queue\QueueServiceInterface;
+use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
 class AmqpServiceTest extends TestCase
 {
     /**
-     * @var AmqpService
+     * @var QueueServiceInterface
      */
     private $service;
 
     protected function setUp()
     {
-        $this->service = new AmqpService(
-            AmqpBuilder::connect(
-                env('RABBIT_HOST'),
-                env('RABBIT_VHOST'),
-                env('RABBIT_PORT'),
-                env('RABBIT_LOGIN'),
-                env('RABBIT_PASSWORD')
-            )->exchange(
-                'Test',
-                AMQP_EX_TYPE_TOPIC
-            )
-        );
+        parent::setUp();
+
+        $this->service = App::make(QueueServiceInterface::class);;
     }
 
 

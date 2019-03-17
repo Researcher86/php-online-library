@@ -47,8 +47,8 @@ class ConsumerBookUpload extends Command
         Log::debug("Consumer run");
 
         $this->queueService->consume(
-            config('amqp.queues.process.book.name'),
-            config('amqp.queues.process.book.routing_key'),
+            config('queue.connections.amqp.queues.process.book.name'),
+            config('queue.connections.amqp.queues.process.book.routing_key'),
             true,
             function ($data) {
                 Log::info($data);

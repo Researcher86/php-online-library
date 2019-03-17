@@ -32,8 +32,8 @@ class BookUploadListener
     public function handle(BookUploadEvent $event)
     {
         $this->queueService->publish(
-            config('amqp.queues.process.book.name'),
-            config('amqp.queues.process.book.routing_key'),
+            config('queue.connections.amqp.queues.process.book.name'),
+            config('queue.connections.amqp.queues.process.book.routing_key'),
             json_encode($event)
         );
     }
