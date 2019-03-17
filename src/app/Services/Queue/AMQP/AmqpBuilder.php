@@ -5,13 +5,23 @@ namespace App\Services\Queue\AMQP;
 
 use AMQPChannel;
 use AMQPConnection;
+use AMQPEnvelope;
 use AMQPExchange;
 use AMQPQueue;
 
 class AmqpBuilder
 {
+    /**
+     * @var AMQPConnection
+     */
     private $conn;
+    /**
+     * @var AMQPChannel
+     */
     private $channel;
+    /**
+     * @var AMQPExchange
+     */
     private $exchange;
 
     private function __construct()
@@ -19,6 +29,15 @@ class AmqpBuilder
 
     }
 
+    /**
+     * @param string $host
+     * @param string $vhost
+     * @param int $port
+     * @param string $login
+     * @param string $password
+     * @return AmqpBuilder
+     * @throws \AMQPConnectionException
+     */
     public static function connect(string $host, string $vhost, int $port, string $login, string $password)
     {
         $amqp = new self();
@@ -30,13 +49,21 @@ class AmqpBuilder
             'password' => $password
         ]);
         $amqp->conn->connect();
+        $amqp->channel = new AMQPChannel($amqp->conn);
 
         return $amqp;
     }
 
+    /**
+     * @param string $name
+     * @param string $type
+     * @return $this
+     * @throws \AMQPChannelException
+     * @throws \AMQPConnectionException
+     * @throws \AMQPExchangeException
+     */
     public function exchange(string $name, string $type)
     {
-        $this->channel = new AMQPChannel($this->conn);
         $this->exchange = new AMQPExchange($this->channel);
         $this->exchange->setName($name);
         $this->exchange->setType($type);
@@ -46,7 +73,7 @@ class AmqpBuilder
         return $this;
     }
 
-    public function queue(string $name, string $routingKey): AMQPQueue
+    private function queue(string $name, string $routingKey): AMQPQueue
     {
         $queue = new AMQPQueue($this->channel);
         $queue->setName($name);
@@ -57,11 +84,35 @@ class AmqpBuilder
     }
 
     /**
-     * @return mixed
+     * @param string $queue
+     * @param string $routingKey
+     * @param string $data
+     * @throws \AMQPChannelException
+     * @throws \AMQPConnectionException
+     * @throws \AMQPExchangeException
      */
-    public function getExchange()
+    public function publish(string $queue, string $routingKey, string $data)
     {
-        return $this->exchange;
+        $this->queue($queue, $routingKey);
+        $this->exchange->publish($data, $routingKey, AMQP_NOPARAM, ['delivery_mode' => 2]);
+    }
+
+    /**
+     * @param string $queue
+     * @param string $routingKey
+     * @param bool $isWait
+     * @param callable $handler
+     * @throws \AMQPChannelException
+     * @throws \AMQPConnectionException
+     * @throws \AMQPEnvelopeException
+     */
+    public function consume(string $queue, string $routingKey, bool $isWait, callable $handler)
+    {
+        $this->queue($queue, $routingKey)->consume(function (AMQPEnvelope $envelope, AMQPQueue $queue) use ($isWait, $handler) {
+            $handler($envelope->getBody());
+            $queue->ack($envelope->getDeliveryTag());
+            return $isWait;
+        });
     }
 
 }

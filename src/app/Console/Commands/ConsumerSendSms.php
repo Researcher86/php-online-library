@@ -46,9 +46,14 @@ class ConsumerSendSms extends Command
     {
         Log::debug("Consumer Send SMS run");
 
-        $this->queueService->consume(config('amqp.queues.notifications.sms.name'), config('amqp.queues.notifications.sms.routing_key'), function ($data) {
-            Log::info('Send SMS: ' . $data);
-        });
+        $this->queueService->consume(
+            config('amqp.queues.notifications.sms.name'),
+            config('amqp.queues.notifications.sms.routing_key'),
+            true,
+            function ($data) {
+                Log::info('Send SMS: ' . $data);
+            }
+        );
 
         Log::debug("Consumer Send SMS stop");
     }

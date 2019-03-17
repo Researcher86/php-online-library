@@ -30,13 +30,12 @@ class AmqpServiceTest extends TestCase
     }
 
 
-    public function testProducer()
+    public function testPubSub()
     {
         $this->service->publish('test', 'test', 'Data');
         $result = '';
-        $this->service->consume('test', 'test', function ($data) use (&$result) {
+        $this->service->consume('test', 'test', false, function ($data) use (&$result) {
             $result = $data;
-            return false; // The AMQPQueue::consume() will not return the processing thread back to the PHP script until the callback function returns FALSE.
         });
 
         self::assertEquals('Data', $result);

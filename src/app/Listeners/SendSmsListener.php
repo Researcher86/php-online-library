@@ -31,6 +31,10 @@ class SendSmsListener
      */
     public function handle($event)
     {
-        $this->queueService->publish('sms', 'notification.sms', json_encode($event));
+        $this->queueService->publish(
+            config('amqp.queues.notifications.sms.name'),
+            config('amqp.queues.notifications.sms.routing_key'),
+            json_encode($event)
+        );
     }
 }

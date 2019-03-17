@@ -31,6 +31,10 @@ class SendEmailListener
      */
     public function handle($event)
     {
-        $this->queueService->publish('email', 'notification.email', json_encode($event));
+        $this->queueService->publish(
+            config('amqp.queues.notifications.email.name'),
+            config('amqp.queues.notifications.email.routing_key'),
+            json_encode($event)
+        );
     }
 }

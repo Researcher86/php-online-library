@@ -46,9 +46,14 @@ class ConsumerBookUpload extends Command
     {
         Log::debug("Consumer run");
 
-        $this->queueService->consume(config('amqp.queues.process.book.name'), config('amqp.queues.process.book.routing_key'), function ($data) {
-            Log::info($data);
-        });
+        $this->queueService->consume(
+            config('amqp.queues.process.book.name'),
+            config('amqp.queues.process.book.routing_key'),
+            true,
+            function ($data) {
+                Log::info($data);
+            }
+        );
 
         Log::debug("Consumer stop");
     }

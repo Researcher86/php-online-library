@@ -3,8 +3,6 @@
 namespace App\Services\Queue\AMQP;
 
 
-use AMQPEnvelope;
-use AMQPQueue;
 use App\Services\Queue\QueueServiceInterface;
 
 class AmqpService implements QueueServiceInterface
@@ -20,18 +18,21 @@ class AmqpService implements QueueServiceInterface
         $this->amqpBuilder = $amqpBuilder;
     }
 
-    public function publish(string $queue, string $routingKey, string $data)
+    public function publish(string $queue, string $routingKey, string $data): void
     {
-        $this->amqpBuilder->queue($queue, $routingKey);
-        $this->amqpBuilder->getExchange()->publish(json_encode($data), $routingKey, AMQP_NOPARAM, ['delivery_mode' => 2]);
+        try {
+            $this->amqpBuilder->publish($queue, $routingKey, $data);
+        } catch (\AMQPException $e) {
+            throw new \RuntimeException("An error occurred while sending the message", 1, $e);
+        }
     }
 
-    public function consume(string $queue, string $routingKey, callable $handler)
+    public function consume(string $queue, string $routingKey, bool $isWait, callable $handler): void
     {
-        $this->amqpBuilder->queue($queue, $routingKey)->consume(function (AMQPEnvelope $envelope, AMQPQueue $queue) use ($handler) {
-            $result = $handler(json_decode($envelope->getBody()));
-            $queue->ack($envelope->getDeliveryTag());
-            return $result;
-        });
+        try {
+            $this->amqpBuilder->consume($queue, $routingKey, $isWait, $handler);
+        } catch (\AMQPException $e) {
+            throw new \RuntimeException("Error initializing consumer", 1, $e);
+        }
     }
 }
