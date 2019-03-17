@@ -59,22 +59,6 @@ class AmqpBuilder
     /**
      * @return mixed
      */
-    public function getConn()
-    {
-        return $this->conn;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getChannel()
-    {
-        return $this->channel;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getExchange()
     {
         return $this->exchange;
