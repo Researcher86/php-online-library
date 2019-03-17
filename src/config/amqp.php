@@ -15,5 +15,23 @@ return [
         'queue_properties' => ['x-ha-policy' => ['S', 'all']],
         'exchange_properties' => [],
         'timeout' => 0
+    ],
+    'queues' => [
+        'process' => [
+            'book' => [
+                'name' => 'book',
+                'routing_key' => 'process.book.upload'
+            ]
+        ],
+        'notifications' => [
+            'email' => [
+                'name' => 'email',
+                'routing_key' => 'notification.email'
+            ],
+            'sms' => [
+                'name' => 'sms',
+                'routing_key' => 'notification.sms'
+            ],
+        ],
     ]
 ];

@@ -36,6 +36,39 @@ services:
             - elasticsearch
             - mongo
             - rabbitmq
+    consumer-book-upload:
+        restart: always
+        command: bash -c "./artisan command:consumer-book-upload"
+        build:
+            context: ./
+            dockerfile: docker/php-cli.docker
+        volumes:
+            - ./src:/var/www
+        depends_on:
+            - postgresql
+            - rabbitmq
+    consumer-send-email:
+        restart: always
+        command: bash -c "./artisan command:consumer-send-email"
+        build:
+            context: ./
+            dockerfile: docker/php-cli.docker
+        volumes:
+            - ./src:/var/www
+        depends_on:
+            - postgresql
+            - rabbitmq
+    consumer-send-sms:
+        restart: always
+        command: bash -c "./artisan command:consumer-send-sms"
+        build:
+            context: ./
+            dockerfile: docker/php-cli.docker
+        volumes:
+            - ./src:/var/www
+        depends_on:
+            - postgresql
+            - rabbitmq
     php-cli-xdebug:
         build:
             context: ./
