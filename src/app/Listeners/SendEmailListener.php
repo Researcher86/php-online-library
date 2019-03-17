@@ -2,10 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\BookUploadEvent;
 use App\Services\Queue\QueueServiceInterface;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class BookUploadListener
+class SendEmailListener
 {
     /**
      * @var QueueServiceInterface
@@ -19,18 +20,17 @@ class BookUploadListener
      */
     public function __construct(QueueServiceInterface $queueService)
     {
-
         $this->queueService = $queueService;
     }
 
     /**
      * Handle the event.
      *
-     * @param  BookUploadEvent $event
+     * @param  object  $event
      * @return void
      */
-    public function handle(BookUploadEvent $event)
+    public function handle($event)
     {
-        $this->queueService->publish('books', 'process.book.upload', json_encode($event));
+        $this->queueService->publish('email', 'notification.email', json_encode($event));
     }
 }

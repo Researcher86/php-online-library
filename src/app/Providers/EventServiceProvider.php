@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use App\Events\BookUploadEvent;
+use App\Events\SendEmailEvent;
+use App\Events\SendSmsEvent;
 use App\Listeners\BookUploadListener;
+use App\Listeners\SendEmailListener;
+use App\Listeners\SendSmsListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +26,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         BookUploadEvent::class => [
             BookUploadListener::class,
+        ],
+        SendEmailEvent::class => [
+            SendEmailListener::class,
+        ],
+        SendSmsEvent::class => [
+            SendSmsListener::class,
         ],
     ];
 
