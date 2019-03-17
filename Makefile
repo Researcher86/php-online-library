@@ -1,5 +1,5 @@
 DC := docker-compose
-COMPOSER := docker-compose run composer
+COMPOSER := docker-compose run php-cli composer
 ARTISAN := docker-compose run php-cli php artisan
 NODE := docker-compose run node
 PHING := docker-compose run php-cli vendor/bin/phing
@@ -36,9 +36,6 @@ logs:
 
 test:
 	$(PHP) vendor/bin/phpunit
-
-composer:
-	$(COMPOSER) sh
 
 composer-install:
 	$(COMPOSER) install
@@ -88,7 +85,7 @@ nginx:
 nginx-reload:
 	$(NGINX) nginx -s reload
 
-artisan:
+php-cli:
 #      make:auth
 #      make:channel
 #      make:command

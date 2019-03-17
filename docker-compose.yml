@@ -105,12 +105,6 @@ services:
             - ./src:/var/www
         working_dir: /var/www
         tty: true
-    composer:
-        image: composer:1.7
-        volumes:
-            - ./src:/var/www
-        working_dir: /var/www
-        tty: true
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:6.6.1
         environment:

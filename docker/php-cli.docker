@@ -5,6 +5,13 @@ RUN apt-get update && apt-get install -y libmcrypt-dev libpq-dev librabbitmq-dev
     && docker-php-ext-install pdo pdo_pgsql pcntl bcmath \
     && docker-php-ext-enable amqp
 
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- \
+        --filename=composer \
+        --install-dir=/usr/local/bin && \
+        echo "alias composer='composer'" >> /root/.bashrc && \
+        composer
+
 #RUN echo 'alias sf="php app/console"' >> ~/.bashrc
 #RUN echo 'alias sf3="php bin/console"' >> ~/.bashrc
 
