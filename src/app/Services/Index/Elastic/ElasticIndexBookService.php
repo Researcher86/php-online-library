@@ -201,11 +201,11 @@ class ElasticIndexBookService implements IndexBookServiceInterface
 
         // Get settings for one index
         $response = $this->client->indices()->getSettings(['index' => self::INDEX]);
-        $this->logger->info('Settings', $response);
+        $this->logger->info('Add settings', $response);
 
         // Get mapping 'my_type' in 'my_index'
         $response = $this->client->indices()->getMapping(['index' => self::INDEX, 'type' => self::TYPE]);
-        $this->logger->info('Mappings', $response);
+        $this->logger->info('Add mappings', $response);
     }
 
     private function deleteIndex()
