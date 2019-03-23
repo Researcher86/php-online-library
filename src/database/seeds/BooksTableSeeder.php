@@ -67,14 +67,16 @@ class BooksTableSeeder extends Seeder
             $author = Author::firstOrCreate(['name' => $authorName]);
             $image = Image::firstOrCreate(['file' => '/files/' . date('Y-m-d') . '/books/' . $bookId . '/' . $imageName]);
 
-            /** @var Book $book */
-            $book = Book::create(['title' => $bookName, 'annotation' => $annotation]);
-            $book->addGenre($genre);
-            $book->addAuthor($author);
-            $book->addImage($image);
-            $book->addRating(Rating::create(random_int(1, 5), $user->id));
+            if (!Book::where('title', '=', $bookName)->first()) {
+                /** @var Book $book */
+                $book = Book::create(['title' => $bookName, 'annotation' => $annotation]);
+                $book->addGenre($genre);
+                $book->addAuthor($author);
+                $book->addImage($image);
+                $book->addRating(Rating::create(random_int(1, 5), $user->id));
 
-            $this->indexBookService->add($book);
+                $this->indexBookService->add($book);
+            }
         }
 
 //        file_put_contents(__DIR__ . '/books.json', json_encode($books, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
