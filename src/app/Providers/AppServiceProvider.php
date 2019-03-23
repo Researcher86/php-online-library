@@ -11,6 +11,7 @@ use App\Services\Index\IndexBookServiceInterface;
 use App\Services\Queue\AMQP\AmqpBuilder;
 use App\Services\Queue\AMQP\AmqpService;
 use App\Services\Queue\QueueServiceInterface;
+use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -42,18 +43,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GenreServiceInterface::class, function ($app) {
-            return new GenreService();
-        });
+        $this->app->bind(GenreServiceInterface::class, GenreService::class);
+        $this->app->bind(BookServiceInterface::class, BookService::class);
 
-        $this->app->singleton(BookServiceInterface::class, function ($app) {
-            return new BookService();
-        });
-
-        $this->app->singleton(QueueServiceInterface::class, function ($app) {
+        $this->app->singleton(AmqpBuilder::class, function ($app) {
             /** @var \Illuminate\Foundation\Application $app */
-            return new AmqpService(
-                AmqpBuilder::connect(
+            return AmqpBuilder::connect(
                     config('queue.connections.amqp.host'),
                     config('queue.connections.amqp.vhost'),
                     config('queue.connections.amqp.port'),
@@ -62,16 +57,13 @@ class AppServiceProvider extends ServiceProvider
                 )->exchange(
                     config('queue.connections.amqp.exchange'),
                     config('queue.connections.amqp.exchange_type')
-                )
-            );
+                );
         });
+        $this->app->bind(QueueServiceInterface::class, AmqpService::class);
 
-        $this->app->singleton(IndexBookServiceInterface::class, function ($app) {
-            return new ElasticIndexBookService(
-                ClientBuilder::create()->setHosts([
-                    config('database.elasticsearch.host')
-                ])->build()
-            );
+        $this->app->singleton(Client::class, function ($app) {
+            return ClientBuilder::create()->setHosts([config('database.elasticsearch.host')])->build();
         });
+        $this->app->bind(IndexBookServiceInterface::class, ElasticIndexBookService::class);
     }
 }

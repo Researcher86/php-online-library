@@ -6,7 +6,7 @@ namespace App\Services\Index\Elastic;
 use App\Models\Book\Book;
 use App\Services\Index\IndexBookServiceInterface;
 use Elasticsearch\Client;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 use stdClass;
 
 class ElasticIndexBookService implements IndexBookServiceInterface
@@ -14,10 +14,20 @@ class ElasticIndexBookService implements IndexBookServiceInterface
     private const INDEX = 'library';
     private const TYPE = 'books';
     private $client;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(Client $client)
+    /**
+     * ElasticIndexBookService constructor.
+     * @param Client $client
+     * @param LoggerInterface $logger
+     */
+    public function __construct(Client $client, LoggerInterface $logger)
     {
         $this->client = $client;
+        $this->logger = $logger;
     }
 
 
@@ -39,7 +49,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
     {
         $this->deleteIndex();
         $this->createIndex();
-        Log::info('Restore index success');
+        $this->logger->info('Restore index success');
     }
 
     public function searchByTitle(string $title)
@@ -181,22 +191,22 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         ];
 
         $response = $this->client->indices()->create($mappings);
-        Log::info('Create index', $response);
+        $this->logger->info('Create index', $response);
 
         // Get settings for one index
         $response = $this->client->indices()->getSettings(['index' => self::INDEX]);
-        Log::info('Settings', $response);
+        $this->logger->info('Settings', $response);
 
         // Get mapping 'my_type' in 'my_index'
         $response = $this->client->indices()->getMapping(['index' => self::INDEX, 'type' => self::TYPE]);
-        Log::info('Mappings', $response);
+        $this->logger->info('Mappings', $response);
     }
 
     private function deleteIndex()
     {
         if ($this->client->indices()->exists(['index' => self::INDEX])) {
             $response = $this->client->indices()->delete(['index' => self::INDEX]);
-            Log::info('Delete index', $response);
+            $this->logger->info('Delete index', $response);
         }
     }
 }
