@@ -37,6 +37,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             'index' => self::INDEX,
             'type' => self::TYPE,
             'body' => [
+                'id' => $book->id,
                 'genre' => $book->getGenres()->get(0)->name,
                 'title' => $book->title,
                 'author' => $book->getAuthors()->get(0)->name,
