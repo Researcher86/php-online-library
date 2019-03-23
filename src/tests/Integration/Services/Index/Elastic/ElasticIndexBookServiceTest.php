@@ -14,28 +14,35 @@ class ElasticIndexBookServiceTest extends TestCase
      */
     private $service;
 
+    /**
+     * @var Book
+     */
+    private $book;
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->service = App::make(IndexBookServiceInterface::class);
-        $this->service->restore();
+
+        $this->book = Book::findOrFail(1);
     }
 
 
     public function testAdd()
     {
-        $book1 = Book::findOrFail(1);
-        $book2 = Book::findOrFail(2);
-        $book3 = Book::findOrFail(3);
+        $countBefore = $this->service->count();
 
-        $this->service->add($book1);
-        $this->service->add($book2);
-        $this->service->add($book3);
+        $this->service->add($this->book);
 
-        sleep(1);
+        //
+        sleep(2);
 
-        self::assertEquals(3, $this->service->count());
+        self::assertEquals(1, $this->service->count() - $countBefore);
+
+        // Restore data
+        $this->service->delete($this->book);
+        $this->service->add($this->book);
     }
 
 }

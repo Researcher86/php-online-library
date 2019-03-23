@@ -46,6 +46,22 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         ]);
     }
 
+    public function delete(Book $book)
+    {
+        $this->client->deleteByQuery([
+            'index' => self::INDEX,
+            'type' => self::TYPE,
+            'body' => [
+                'query' => [
+                    'match' => [
+                        'id' => $book->id
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+
     public function restore()
     {
         $this->deleteIndex();

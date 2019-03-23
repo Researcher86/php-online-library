@@ -9,6 +9,8 @@ interface IndexBookServiceInterface
 {
     public function add(Book $book);
 
+    public function delete(Book $book);
+
     public function restore();
 
     public function searchByTitle(string $title);
