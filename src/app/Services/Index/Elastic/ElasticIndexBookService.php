@@ -7,7 +7,6 @@ use App\Models\Book\Book;
 use App\Services\Index\IndexBookServiceInterface;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
-use stdClass;
 
 class ElasticIndexBookService implements IndexBookServiceInterface
 {
@@ -38,10 +37,10 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             'type' => self::TYPE,
             'id' => $book->id,
             'body' => [
-                'genre' => $book->getGenres()->get(0)->name,
                 'title' => $book->title,
-                'author' => $book->getAuthors()->get(0)->name,
                 'annotation' => $book->annotation,
+                'genre' => $book->getGenres()->get(0)->name,
+                'author' => $book->getAuthors()->get(0)->name,
             ],
         ]);
     }
@@ -100,13 +99,14 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             'body' => [
                 'query' => $query,
                 'highlight' => [
-                    'number_of_fragments' => 0,
-                    'fragment_size' => 150,
-                    'pre_tags' => ['<strong>'],
-                    'post_tags' => ['</strong>'],
-                    "require_field_match" => true,
                     'fields' => [
-                        '*' => new stdClass(),
+                        '*' => [
+                            'fragment_size' => 150,
+                            'number_of_fragments' => 4,
+                            'pre_tags' => ['<strong>'],
+                            'post_tags' => ['</strong>'],
+                            "require_field_match" => true,
+                        ],
 //                        self::TYPE . '.title' => ['number_of_fragments' => 0],
 //                        self::TYPE . '.author' => ['number_of_fragments' => 0],
 //                        self::TYPE . '.description' => ['number_of_fragments' => 5, 'order' => 'score']
@@ -121,7 +121,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
     private function getBooks(array $response): array
     {
         $books = array_map(function ($item) {
-            return $item['_source'];
+            return array_merge(['id' => $item['_id']], $item['_source'], ['highlight' => $item['highlight']]);
         }, $response['hits']['hits']);
 
         return $books;
