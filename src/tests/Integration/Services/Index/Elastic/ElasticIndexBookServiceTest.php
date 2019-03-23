@@ -44,4 +44,13 @@ class ElasticIndexBookServiceTest extends TestCase
         $this->service->delete($book);
     }
 
+    public function testSearchByTitle()
+    {
+        $response = $this->service->searchByTitle('В поисках убийцы');
+        $book = $response[0];
+
+        self::assertEquals(41, $book['id']);
+        self::assertEquals('В поисках убийцы', $book['title']);
+    }
+
 }
