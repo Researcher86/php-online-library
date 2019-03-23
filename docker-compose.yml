@@ -118,6 +118,26 @@ services:
             - elasticsearch-data:/usr/share/elasticsearch/data
         ports:
             - "9201:9200"
+    kibana:
+        #       http://localhost:5601
+        image: docker.elastic.co/kibana/kibana:6.6.1
+        ports:
+            - "5601:5601"
+        volumes:
+            - ./docker/elk/kibana.yml:/usr/share/kibana/config/kibana.yml
+        depends_on:
+            - elasticsearch
+            - logstash
+    logstash:
+        #       http://localhost:9600
+        image: docker.elastic.co/logstash/logstash:6.6.1
+        volumes:
+            - ./docker/elk/logstash/pipeline/:/usr/share/logstash/pipeline
+            - ./docker/elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+        ports:
+            - "9600:9600"
+        depends_on:
+            - elasticsearch
     mongo:
         image: mongo:4.0
         ports:
