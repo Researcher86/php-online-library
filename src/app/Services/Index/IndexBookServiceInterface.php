@@ -16,4 +16,6 @@ interface IndexBookServiceInterface
     public function searchByAuthor(string $name);
 
     public function searchByAnnotation(string $annotation);
+
+    public function count();
 }

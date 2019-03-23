@@ -79,6 +79,12 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         ]);
     }
 
+    public function count()
+    {
+        $response = $this->client->count(['index' => self::INDEX, 'type' => self::TYPE]);
+        return $response['count'];
+    }
+
     private function searchByQuery(array $query)
     {
         $response = $this->client->search([
