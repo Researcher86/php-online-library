@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Book\Author;
-use App\Models\Book\Book;
-use App\Models\Book\Genre;
-use App\Models\Book\Image;
-use App\Models\Book\Rating;
-use App\Models\User;
+use App\Handler\Book\BookParser;
+use App\Handler\Book\ClearDir;
+use App\Handler\Book\FindFile;
+use App\Handler\Book\Indexer;
+use App\Handler\Book\MoveImage;
+use App\Handler\Book\Printer;
 use App\Services\Index\IndexBookServiceInterface;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
@@ -28,62 +28,13 @@ class BooksTableSeeder extends Seeder
 
     public function run()
     {
-        $dirFiles = __DIR__ . '/../../storage/app/public/files/';
-//        $books = [];
+        $root = new ClearDir(__DIR__ . '/../../storage/app/public/files/');
+        $root->setNext(new FindFile(__DIR__ . '/books/*/*/*.json'))
+            ->setNext(new MoveImage(__DIR__ . '/../../storage/app/public/files/'))
+            ->setNext(new BookParser())
+//            ->setNext(new Printer())
+            ->setNext(new Indexer($this->indexBookService));
 
-        if (PHP_OS === 'Windows' && file_exists($dirFiles)) {
-            exec(sprintf("rd /s /q %s", escapeshellarg($dirFiles)));
-        } else {
-            exec(sprintf("rm -rf %s", escapeshellarg($dirFiles)));
-        }
-
-        $user = User::take(1)->first();
-        foreach (glob(__DIR__ . '/books/*/*/*.json') as $jsonFile) {
-            $bookId = microtime();
-            $json = json_decode(file_get_contents($jsonFile));
-
-            $jsonFile = str_replace(__DIR__ . '/books/', '', $jsonFile);
-
-            preg_match('/(.*?)\/(.*?)\//', $jsonFile, $matches);
-            $genreName = $this->replaceSymbols($matches[1]);
-            $bookName = $this->replaceSymbols($matches[2]);
-            $authorName = $this->replaceSymbols($json[2]);
-            $annotation = $this->replaceSymbols($json[3]);
-            $imageName = basename($json[0]);
-
-//            $books[] = ['genre' => $genreName, 'name' => $bookName, 'author' => $authorName, 'annotation' =>$annotation];
-
-            $sourceDir = __DIR__ . '/books/' . dirname($jsonFile) . '/' . $imageName;
-            $destDir = $dirFiles . date('Y-m-d') . '/books/' . $bookId;
-            if (!file_exists($destDir)) {
-                mkdir($destDir, 0777, true);
-            }
-            @copy(
-                $sourceDir,
-                $destDir . '/' . $imageName
-            );
-
-            $genre = Genre::firstOrCreate(['name' => $genreName]);
-            $author = Author::firstOrCreate(['name' => $authorName]);
-            $image = Image::firstOrCreate(['file' => '/files/' . date('Y-m-d') . '/books/' . $bookId . '/' . $imageName]);
-
-            if (!Book::where('title', '=', $bookName)->first()) {
-                /** @var Book $book */
-                $book = Book::create(['title' => $bookName, 'annotation' => $annotation]);
-                $book->addGenre($genre);
-                $book->addAuthor($author);
-                $book->addImage($image);
-                $book->addRating(Rating::create(random_int(1, 5), $user->id));
-
-                $this->indexBookService->add($book);
-            }
-        }
-
-//        file_put_contents(__DIR__ . '/books.json', json_encode($books, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-    }
-
-    private function replaceSymbols(string $string)
-    {
-        return preg_replace('/«|»/s', '"', $string);
+        $root->handle(null);
     }
 }
