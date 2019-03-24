@@ -6,7 +6,6 @@ use App\Models\Book\Author;
 use App\Models\Book\Book;
 use App\Models\Book\Genre;
 use App\Services\Book\Index\IndexBookServiceInterface;
-use App\Services\Book\Index\Request;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
@@ -35,15 +34,8 @@ class ElasticIndexBookServiceTest extends TestCase
         $book->addAuthor(factory(Author::class)->create());
         $book->save();
 
-        $request = new Request(
-            $book->id,
-            $book->title,
-            $book->getGenres()->get(0)->name,
-            $book->getAuthors()->get(0)->name,
-            $book->annotation
-        );
-        $addResult = $this->service->add($request);
-        $updateResult = $this->service->add($request);
+        $addResult = $this->service->add($book);
+        $updateResult = $this->service->add($book);
 
         // Даем время для индексации
         sleep(2);

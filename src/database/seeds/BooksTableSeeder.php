@@ -6,7 +6,7 @@ use App\Handler\Book\FindFile;
 use App\Handler\Book\Indexer;
 use App\Handler\Book\MoveImage;
 use App\Handler\Book\Printer;
-use App\Services\Index\IndexBookServiceInterface;
+use App\Services\Book\Index\IndexBookServiceInterface;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
 

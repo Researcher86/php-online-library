@@ -3,8 +3,8 @@
 namespace App\Services\Book\Index\Elastic;
 
 
+use App\Models\Book\Book;
 use App\Services\Book\Index\IndexBookServiceInterface;
-use App\Services\Book\Index\Request;
 use App\Services\Book\Index\Response;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
@@ -31,17 +31,17 @@ class ElasticIndexBookService implements IndexBookServiceInterface
     }
 
 
-    public function add(Request $request): bool
+    public function add(Book $book): bool
     {
         $response = $this->client->index([
             'index' => self::INDEX,
             'type' => self::TYPE,
-            'id' => $request->getId(),
+            'id' => $book->id,
             'body' => [
-                'title' => $request->getTitle(),
-                'annotation' => $request->getAnnotation(),
-                'genre' => $request->getGenre(),
-                'author' => $request->getAuthor(),
+                'title' => $book->title,
+                'annotation' => $book->annotation,
+                'genre' => $book->getGenres()->get(0)->name,
+                'author' => $book->getAuthors()->get(0)->name,
             ],
         ]);
 

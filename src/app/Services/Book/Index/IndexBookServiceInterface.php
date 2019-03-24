@@ -2,6 +2,8 @@
 
 namespace App\Services\Book\Index;
 
+use App\Models\Book\Book;
+
 /**
  * Интерфейс для сервисов индексации информации о книгах
  * Interface IndexBookServiceInterface
@@ -11,10 +13,10 @@ interface IndexBookServiceInterface
 {
     /**
      * Добавляет книгу в индекс, если книга уже есть в индексе, то обновляет
-     * @param Request $request
+     * @param Book $book
      * @return bool
      */
-    public function add(Request $request): bool;
+    public function add(Book $book): bool;
 
     /**
      * Удаляет книгу из индекса

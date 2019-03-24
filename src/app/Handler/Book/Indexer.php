@@ -3,7 +3,7 @@
 namespace App\Handler\Book;
 
 
-use App\Services\Index\IndexBookServiceInterface;
+use App\Services\Book\Index\IndexBookServiceInterface;
 
 class Indexer extends AbstractHandler
 {
