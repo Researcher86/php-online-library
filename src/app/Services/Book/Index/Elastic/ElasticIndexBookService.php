@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Services\Index\Elastic;
+namespace App\Services\Book\Index\Elastic;
 
 
-use App\Models\Book\Book;
-use App\Services\Index\IndexBookServiceInterface;
+use App\Services\Book\Index\IndexBookServiceInterface;
+use App\Services\Book\Index\Request;
+use App\Services\Book\Index\Response;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
@@ -30,28 +31,31 @@ class ElasticIndexBookService implements IndexBookServiceInterface
     }
 
 
-    public function add(Book $book)
+    public function add(Request $request): bool
     {
-        return $this->client->index([
+        $response = $this->client->index([
             'index' => self::INDEX,
             'type' => self::TYPE,
-            'id' => $book->id,
+            'id' => $request->getId(),
             'body' => [
-                'title' => $book->title,
-                'annotation' => $book->annotation,
-                'genre' => $book->getGenres()->get(0)->name,
-                'author' => $book->getAuthors()->get(0)->name,
+                'title' => $request->getTitle(),
+                'annotation' => $request->getAnnotation(),
+                'genre' => $request->getGenre(),
+                'author' => $request->getAuthor(),
             ],
         ]);
+
+        return in_array($response['result'], ['created', 'updated']);
     }
 
-    public function delete(Book $book)
+    public function delete(int $id): bool
     {
-        $this->client->delete(['index' => self::INDEX, 'type' => self::TYPE, 'id' => $book->id]);
+        $response = $this->client->delete(['index' => self::INDEX, 'type' => self::TYPE, 'id' => $id]);
+        return $response['result'] === 'deleted';
     }
 
 
-    public function restore()
+    public function restore(): void
     {
         $this->deleteIndex();
         $this->createIndex();
@@ -85,7 +89,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         ]);
     }
 
-    public function count()
+    public function count(): int
     {
         $response = $this->client->count(['index' => self::INDEX, 'type' => self::TYPE]);
         return $response['count'];
@@ -118,10 +122,17 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         return $this->getBooks($response);
     }
 
-    private function getBooks(array $response): array
+    private function getBooks(array $response)
     {
         $books = array_map(function ($item) {
-            return array_merge(['id' => $item['_id']], $item['_source'], ['highlight' => $item['highlight']]);
+            return new Response(
+                $item['_id'],
+                $item['_source']['title'],
+                $item['_source']['genre'],
+                $item['_source']['author'],
+                $item['_source']['annotation'],
+                $item['highlight']
+            );
         }, $response['hits']['hits']);
 
         return $books;
