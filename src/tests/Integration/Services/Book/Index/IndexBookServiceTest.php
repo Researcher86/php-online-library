@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Service\Index\Elastic;
+namespace Tests\Integration\Service\Book\Index;
 
 use App\Models\Book\Author;
 use App\Models\Book\Book;
@@ -9,7 +9,7 @@ use App\Services\Book\Index\IndexBookServiceInterface;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
-class ElasticIndexBookServiceTest extends TestCase
+class IndexBookServiceTest extends TestCase
 {
     /**
      * @var IndexBookServiceInterface
