@@ -41,7 +41,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
                 'title' => $book->title,
                 'annotation' => $book->annotation,
                 'genre' => $book->getGenres()->get(0)->name,
-                'author' => $book->getAuthors()->get(0)->name,
+                'author' => $book->getAuthors(),
             ],
         ]);
 
