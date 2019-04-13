@@ -18,7 +18,7 @@ class Book extends Model
 
     public function getAuthors()
     {
-        return $this->authors()->get();
+        return $this->authors()->get()->implode('name', ', ');
     }
 
     public function addAuthor(Author $author): void
@@ -83,12 +83,8 @@ class Book extends Model
         return $this->belongsToMany(Image::class, 'book_images', 'book_id', 'image_id');
     }
 
-    public function toArray()
+    public function getPrimaryImage()
     {
-        $data = parent::toArray();
-        $data['image'] = $this->images()->first()->file;
-        $data['rating'] = $this->calculateRatingAverage();
-
-        return $data;
+        return $this->images()->first()->file;
     }
 }

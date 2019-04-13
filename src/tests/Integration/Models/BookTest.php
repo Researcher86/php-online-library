@@ -24,7 +24,7 @@ class BookTest extends TestCase
 
         $book->addRating(Rating::create(5, factory(User::class)->create()->id));
 
-        self::assertNotNull($book->getAuthors()->get(0));
+        self::assertNotNull($book->getAuthors());
         self::assertNotNull($book->getGenres()->get(0));
         self::assertNotNull($book->getImages()->get(0));
         self::assertNotNull($book->getRatings()->get(0));
