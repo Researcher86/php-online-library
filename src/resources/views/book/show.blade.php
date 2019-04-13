@@ -16,6 +16,7 @@
             <div class="col-md-9">
                 <h3>{{ $book->title }}</h3>
                 <h5>Authors: {{ $book->getAuthors() }}</h5>
+                <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
                 <p>
                     {{ $book->annotation }}
                 </p>

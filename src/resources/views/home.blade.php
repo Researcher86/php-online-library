@@ -28,7 +28,9 @@
                     @foreach($books as $book)
                         <div class="col-3 mb-4">
                             <div class="card">
-                                <img class="card-img-top" src="{!! url($book->getPrimaryImage()); !!}" alt="{{ $book->title }}">
+                                <a href="{!! url('/books', $book->id) !!}">
+                                    <img class="card-img-top" src="{!! url($book->getPrimaryImage()); !!}" alt="{{ $book->title }}">
+                                </a>
                                 <div class="card-body">
                                     <a href="{!! url('/books', $book->id) !!}" class="card-title">{{ $book->title }}</a>
                                     <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
