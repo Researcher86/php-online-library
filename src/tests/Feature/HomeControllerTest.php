@@ -5,13 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class HomePageTest extends TestCase
+class HomeControllerTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     public function testHomePage()
     {
         $response = $this->get('/');
@@ -21,6 +17,5 @@ class HomePageTest extends TestCase
         $response->assertSee('register');
         $response->assertSee('ru');
         $response->assertSee('en');
-        $response->assertSee('<home></home>');
     }
 }

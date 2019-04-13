@@ -8,28 +8,22 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class BooksControllerTest extends TestCase
 {
 
-    public function testGetAll()
+    public function testBookShow()
     {
-        $response = $this->json('GET', '/api/books');
+        $response = $this->get('/books/1');
 
         $response->assertStatus(200)
-                  ->assertJsonCount(8, 'data');
-    }
-
-    public function testGetById()
-    {
-        $response = $this->json('GET', '/api/books/1');
-
-        $response->assertStatus(200)
-                 ->assertJsonFragment(['title' => '12 встреч, меняющих судьбу. Практики Мастера']);
+                 ->assertViewIs('book.show')
+                 ->assertViewHasAll(['book']);
     }
 
     public function testGetByGenre()
     {
-        $response = $this->json('GET', '/api/books/genres/1');
+        $response = $this->get('/books/genres/1');
 
         $response->assertStatus(200)
-            ->assertJsonCount(8, 'data');
+            ->assertViewIs('home')
+            ->assertViewHasAll(['genres', 'books']);
     }
 
     public function testAddRating()

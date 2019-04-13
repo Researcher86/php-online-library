@@ -4,62 +4,61 @@ namespace App\Http\Controllers\Book;
 
 use App\Http\Controllers\Controller;
 use App\Services\Book\BookServiceInterface;
+use App\Services\Book\GenreServiceInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class BooksController extends Controller
 {
     private $bookService;
+    /**
+     * @var GenreServiceInterface
+     */
+    private $genreService;
 
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param BookServiceInterface $bookService
+     * @param GenreServiceInterface $genreService
      */
-    public function __construct(BookServiceInterface $bookService)
+    public function __construct(BookServiceInterface $bookService, GenreServiceInterface $genreService)
     {
         $this->bookService = $bookService;
+        $this->genreService = $genreService;
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return response(
-            $this->bookService->getAll()
-        );
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(int $id)
     {
-        return response(
-            $this->bookService->getById($id)
-        );
+        $book = $this->bookService->getById($id);
+        return view('book.show', ['book' => $book]);
     }
 
     /**
-     * Show the application dashboard.
+     * Get book by genre.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getBooksByGenre(int $id)
     {
-        return response(
-            $this->bookService->getBooksByGenre($id)
-        );
+        $genres = $this->genreService->getAll();
+        $books = $this->bookService->getBooksByGenre($id, 8);
+
+        return view('home', ['genres' => $genres, 'books' => $books]);
     }
 
     /**
-     * Show the application dashboard.
+     * Add rating for book.
      *
+     * @param int $bookId
+     * @param int $rating
      * @return \Illuminate\Http\Response
      */
     public function addRating(int $bookId, int $rating)

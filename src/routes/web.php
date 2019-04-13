@@ -21,11 +21,15 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', function () {
-    event(new BookUploadEvent(Book::findOrFail(1)));
-    event(new SendEmailEvent("Test@test.com", "Email"));
-    event(new SendSmsEvent("87011010101", "SMS"));
+//Route::get('/', function () {
+//    return view('home');
+//});
 
-    Log::info($_SERVER['HTTP_USER_AGENT'] ?? '');
-    return view('home');
-});
+Route::get('/', 'HomeController@index');
+//Route::get('books', 'Book\BooksController@index');
+Route::get('books/genres/{id}', 'Book\BooksController@getBooksByGenre');
+Route::get('books/{id}', 'Book\BooksController@show');
+Route::post('books/{bookId}/rating/{rating}', 'Book\BooksController@addRating');
+//Route::post('article', 'ArticleController@store');
+//Route::put('article', 'ArticleController@store');
+//Route::delete('article/{id}', 'ArticleController@destroy');
