@@ -30,6 +30,7 @@ class BookService implements BookServiceInterface
         /** @var Book $book */
         $book = Book::findOrFail($bookId);
         $book->addRating(Rating::create($rating, $userId));
+
         return $book->calculateRatingAverage();
     }
 }

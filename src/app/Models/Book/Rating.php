@@ -26,6 +26,14 @@ class Rating extends Model
         return new Rating(['rating' => $rating, 'user_id' => $userId]);
     }
 
+    public static function checkExists($bookId, $userId)
+    {
+        return self::
+            where('book_id', $bookId)
+            ->where('user_id', $userId)
+            ->exists();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

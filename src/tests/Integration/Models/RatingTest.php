@@ -28,6 +28,13 @@ class RatingTest extends TestCase
         $this->assertNotNull($rating->user);
     }
 
+    public function testCheckExists()
+    {
+        self::assertTrue(Rating::checkExists(1, 2));
+        self::assertFalse(Rating::checkExists(1, 210));
+    }
+
+
     public function providerInvalidData()
     {
         return [

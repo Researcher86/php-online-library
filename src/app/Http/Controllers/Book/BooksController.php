@@ -63,13 +63,17 @@ class BooksController extends Controller
      */
     public function addRating(int $bookId, int $rating)
     {
-//        if (Auth::guest()) {
-//            Log::warning("Guest set book rating", ['userId' => Auth::id(), 'bookId' => $bookId, 'rating' => $rating]);
-//            return response('Unauthorized.', 401);
-//        }
+        if (Auth::guest()) {
+            Log::warning("Guest set book rating", ['userId' => Auth::id(), 'bookId' => $bookId, 'rating' => $rating]);
+            return response('Unauthorized.', 401);
+        }
 
-        return response(
-            $this->bookService->addRating(2, $bookId, $rating)
-        );
+        try {
+            $result = $this->bookService->addRating(Auth::id(), $bookId, $rating);
+            return response(['msg' => 'Your rating is saved.', 'rating' => $result], 200);
+        } catch (\DomainException $e) {
+            return response($e->getMessage(), 400);
+        }
+
     }
 }

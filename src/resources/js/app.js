@@ -14,10 +14,7 @@ window.Vue = require('vue');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-var StarRating = require('vue-star-rating');
-
-// Vue.component('home', require('./components/Home.vue'));
-Vue.component('star-rating', StarRating);
+Vue.component('rating', require('./components/Rating'));
 
 const app = new Vue({
     el: '#app'

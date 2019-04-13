@@ -53,6 +53,10 @@ class Book extends Model
 
     public function addRating(Rating $rating)
     {
+        if (Rating::checkExists($this->id, $rating->user_id)) {
+            throw new \DomainException('You can not put the rating more than once.');
+        }
+
         return $this->ratings()->save($rating);
     }
 

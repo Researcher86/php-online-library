@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -28,8 +29,20 @@ class BooksControllerTest extends TestCase
 
     public function testAddRating()
     {
-        $response = $this->json('POST', '/api/books/1/rating/5');
+        $user = User::findOrFail(3);
 
-        $response->assertStatus(200);
+        $this->actingAs($user)->post('/books/1/rating/5')
+                              ->assertStatus(200)
+                              ->assertJsonFragment(['msg' => 'Your rating is saved.', 'rating' => 4.67]);
+    }
+
+    public function testAddRatingHasError()
+    {
+        $user = User::findOrFail(3);
+        $this->actingAs($user)->post('/books/1/rating/5');
+
+        $this->actingAs($user)->post('/books/1/rating/5')
+                              ->assertStatus(400)
+                              ->assertSee('You can not put the rating more than once.');
     }
 }

@@ -31,7 +31,7 @@
                                 <img class="card-img-top" src="{!! url($book->getPrimaryImage()); !!}" alt="{{ $book->title }}">
                                 <div class="card-body">
                                     <a href="{!! url('/books', $book->id) !!}" class="card-title">{{ $book->title }}</a>
-                                    {{--                                    <star-rating class="mb-3" v-bind:increment="0.5" v-bind:show-rating="false" v-bind:star-size="25" v-model="book.rating" @rating-selected="setRating($event, book)"></star-rating>--}}
+                                    <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
                                     <i class="far fa-eye">12</i>
                                     <a href="#"><i class="fas fa-book-open"></i></a>
                                 </div>
