@@ -41,9 +41,13 @@ services:
         command: bash -c "./artisan command:consumer-book-upload"
         build:
             context: ./
-            dockerfile: docker/php-cli.docker
+            dockerfile: docker/php-cli-xdebug.docker
+        environment:
+            - "PHP_IDE_CONFIG=serverName=Docker"
         volumes:
             - ./src:/var/www
+            - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./storage/docker/profiler:/tmp/profiler
         depends_on:
             - postgresql
             - rabbitmq
@@ -52,9 +56,13 @@ services:
         command: bash -c "./artisan command:consumer-send-email"
         build:
             context: ./
-            dockerfile: docker/php-cli.docker
+            dockerfile: docker/php-cli-xdebug.docker
+        environment:
+            - "PHP_IDE_CONFIG=serverName=Docker"
         volumes:
             - ./src:/var/www
+            - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./storage/docker/profiler:/tmp/profiler
         depends_on:
             - postgresql
             - rabbitmq
@@ -63,9 +71,13 @@ services:
         command: bash -c "./artisan command:consumer-send-sms"
         build:
             context: ./
-            dockerfile: docker/php-cli.docker
+            dockerfile: docker/php-cli-xdebug.docker
+        environment:
+            - "PHP_IDE_CONFIG=serverName=Docker"
         volumes:
             - ./src:/var/www
+            - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./storage/docker/profiler:/tmp/profiler
         depends_on:
             - postgresql
             - rabbitmq
