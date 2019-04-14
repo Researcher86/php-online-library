@@ -1,5 +1,5 @@
 <template>
-    <star-rating class="mb-3" v-bind:increment="0.5" v-bind:show-rating="false" v-bind:star-size="25" v-model="rating" @rating-selected="setRating($event, id)"></star-rating>
+    <star-rating v-bind:increment="0.5" v-bind:show-rating="false" v-bind:star-size="20" v-model="rating" @rating-selected="setRating($event, id)"></star-rating>
 </template>
 
 <script>

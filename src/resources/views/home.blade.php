@@ -10,32 +10,51 @@
 
         <div class="row justify-content-center">
             <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">Жанры</div>
-
-                    <div class="card-body">
-                        @foreach($genres as $genre)
-                            <div>
-                                <a href="{!! url('/books/genres', $genre->id); !!}">{{ $genre->name }}</a>
-                            </div>
-                        @endforeach
+                <h5>Жанры</h5>
+                <hr class="mt-0 mb-4">
+                @foreach($genres as $genre)
+                    <div>
+                        <a href="{!! url('/books/genres', $genre->id); !!}">{{ $genre->name }}</a>
                     </div>
-                </div>
+                @endforeach
             </div>
 
             <div class="col-md-9">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-9 text-right">
+                                <h5>Сортировка: </h5>
+                            </div>
+                            <div class="col-3 mt-xl-n1">
+                                <select class="custom-select custom-select-sm mb-0" id="inputGroupSelect01">
+                                    <option value="1">Популярные</option>
+                                    <option value="2">Новинки</option>
+                                    <option value="3">Высокий рейтинг</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr class="mt-0 mb-4">
+                    </div>
+                </div>
                 <div class="row book-list">
                     @foreach($books as $book)
                         <div class="col-3 mb-4">
                             <div class="card">
                                 <a href="{!! url('/books', $book->id) !!}">
-                                    <img class="card-img-top" src="{!! url($book->getPrimaryImage()); !!}" alt="{{ $book->title }}">
+                                    <img data-toggle="tooltip" data-placement="top" class="card-img-top" src="{!! url($book->getPrimaryImage()); !!}" title="{{ $book->title }}">
                                 </a>
                                 <div class="card-body">
-                                    <a href="{!! url('/books', $book->id) !!}" class="card-title">{{ $book->title }}</a>
-                                    <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
-                                    <i class="far fa-eye">12</i>
-                                    <a href="#"><i class="fas fa-book-open"></i></a>
+                                    <rating class="mb-2" :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
+                                    <div class="row mb-2">
+                                        <div class="col-9">
+                                            <i class="far fa-eye"> 12456456</i>
+                                        </div>
+                                        <div class="col-2">
+
+                                        </div>
+                                    </div>
+                                    <a href="{!! url('/books', $book->id) !!}" class="card-text">{{ $book->title }}</a>
                                 </div>
                             </div>
                         </div>

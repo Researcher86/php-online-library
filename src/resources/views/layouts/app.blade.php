@@ -40,23 +40,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-
+                    <form id="form-search" class="form-inline">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                    </form>
                 </ul>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
-                </form>
-                <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?lang=ru"><img src="/img/flags/ru.png"
-                                                                 class="d-inline-block align-baseline" alt=""> RU</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?lang=en"><img src="/img/flags/us.png"
-                                                                 class="d-inline-block align-baseline" alt=""> EN</a>
-                    </li>
 
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ml-5">
                     <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
@@ -92,11 +83,11 @@
     </nav>
 
     <div class="books">
-        <img src="/img/books/07139043.cover_250.jpg" alt="">
-        <img src="/img/books/09014102.cover_250.jpg" alt="">
-        <img src="/img/books/13704951.cover_250.jpg" alt="">
-        <img src="/img/books/26174170.cover_250.jpg" alt="">
-        <img src="/img/books/27385132.cover_250.jpg" alt="">
+        <img src="/img/books/07139043.cover_250.jpg" title="">
+        <img src="/img/books/09014102.cover_250.jpg" title="">
+        <img src="/img/books/13704951.cover_250.jpg" title="">
+        <img src="/img/books/26174170.cover_250.jpg" title="">
+        <img src="/img/books/27385132.cover_250.jpg" title="">
     </div>
     <div class="row-product-bot"></div>
 
