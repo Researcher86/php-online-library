@@ -24,10 +24,10 @@ class BookTest extends TestCase
 
         $book->addRating(Rating::create(5, factory(User::class)->create()->id));
 
-        self::assertNotNull($book->getAuthors());
-        self::assertNotNull($book->getGenres()->get(0));
-        self::assertNotNull($book->getImages()->get(0));
-        self::assertNotNull($book->getRatings()->get(0));
+        self::assertNotNull($book->getAuthorsNames());
+        self::assertNotNull($book->getGenresNames());
+        self::assertNotNull($book->getImagesFiles());
+        self::assertEquals(5, $book->calculateRatingAverage());
     }
 
     public function testCalculateRatingAverage()
@@ -51,5 +51,18 @@ class BookTest extends TestCase
 
         self::assertEquals(3.34, $book->calculateRatingAverage());
     }
+
+    public function testGetGenres()
+    {
+        /** @var Book $book */
+        $book = factory(Book::class)->create();
+        self::assertNotNull($book);
+
+        $book->addGenre(factory(Genre::class)->create());
+        $book->addGenre(factory(Genre::class)->create());
+
+        self::assertNotNull($book->getGenres());
+    }
+
 
 }

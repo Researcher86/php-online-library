@@ -16,7 +16,7 @@ class Book extends Model
         'title', 'annotation', 'page_count', 'file'
     ];
 
-    public function getAuthors()
+    public function getAuthorsNames()
     {
         return $this->authors()->get()->implode('name', ', ');
     }
@@ -26,19 +26,21 @@ class Book extends Model
         $this->authors()->attach($author);
     }
 
+    public function getGenresNames()
+    {
+        return $this->genres()->get()->implode('name', ', ');
+    }
+
     public function getGenres()
     {
-        return $this->genres()->get();
+        return $this->genres()->get()->map(function ($genre) {
+            return ['id' => $genre->id, 'name' => $genre->name];
+        })->all();
     }
 
-    public function getImages()
+    public function getImagesFiles()
     {
-        return $this->images()->get();
-    }
-
-    public function getRatings()
-    {
-        return $this->ratings()->get();
+        return $this->images()->get()->implode('files', ', ');
     }
 
     public function addGenre(Genre $genre)
@@ -64,6 +66,7 @@ class Book extends Model
     {
         $average = $this->ratings()->average('rating');
         $mult = pow(10, 2);
+
         return ceil($average * $mult) / $mult;
     }
 
