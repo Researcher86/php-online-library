@@ -31,25 +31,11 @@ interface IndexBookServiceInterface
     public function restore(): void;
 
     /**
-     * Нечеткий поиск книги по заголовку
-     * @param string $title
-     * @return Response[]
+     * Нечеткий поиск по книге
+     * @param string $text
+     * @return array
      */
-    public function searchByTitle(string $title);
-
-    /**
-     * Нечеткий поиск книги по автору
-     * @param string $name
-     * @return Response[]
-     */
-    public function searchByAuthor(string $name);
-
-    /**
-     * Нечеткий поиск книги по краткому содержанию
-     * @param string $annotation
-     * @return Response[]
-     */
-    public function searchByAnnotation(string $annotation);
+    public function search(string $text);
 
     /**
      * Подсчет количества книг в индексе

@@ -5,7 +5,6 @@ namespace App\Services\Book\Index\Elastic;
 
 use App\Models\Book\Book;
 use App\Services\Book\Index\IndexBookServiceInterface;
-use App\Services\Book\Index\Response;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
@@ -42,6 +41,8 @@ class ElasticIndexBookService implements IndexBookServiceInterface
                 'annotation' => $book->annotation,
                 'genre' => $book->getGenresNames(),
                 'author' => $book->getAuthorsNames(),
+                'image' => $book->getPrimaryImage(),
+                'file' => '',
             ],
         ]);
 
@@ -62,53 +63,25 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         $this->logger->info('Restore index success');
     }
 
-    public function searchByTitle(string $title)
-    {
-        return $this->searchByQuery([
-            'match' => [
-                'title' => $title
-            ]
-        ]);
-    }
-
-    public function searchByAuthor(string $name)
-    {
-        return $this->searchByQuery([
-            'match' => [
-                'author' => $name
-            ]
-        ]);
-    }
-
-    public function searchByAnnotation(string $annotation)
-    {
-        return $this->searchByQuery([
-            'match' => [
-                'annotation' => $annotation
-            ]
-        ]);
-    }
-
-    public function count(): int
-    {
-        $response = $this->client->count(['index' => self::INDEX, 'type' => self::TYPE]);
-        return $response['count'];
-    }
-
-    private function searchByQuery(array $query)
+    public function search(string $text)
     {
         $response = $this->client->search([
             'index' => self::INDEX,
             'type' => self::TYPE,
             'body' => [
-                'query' => $query,
+                'query' => [
+                    'multi_match' => [
+                        'query' => $text,
+                        'fields' => ['title^4', 'author^3', 'genre^2', 'annotation^1']
+                    ]
+                ],
                 'highlight' => [
                     'fields' => [
                         '*' => [
-                            'fragment_size' => 150,
-                            'number_of_fragments' => 4,
-                            'pre_tags' => ['<strong>'],
-                            'post_tags' => ['</strong>'],
+//                            'fragment_size' => 150,
+//                            'number_of_fragments' => 4,
+                            'pre_tags' => ['<b>'],
+                            'post_tags' => ['</b>'],
                             "require_field_match" => true,
                         ],
 //                        self::TYPE . '.title' => ['number_of_fragments' => 0],
@@ -122,20 +95,31 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         return $this->getBooks($response);
     }
 
+    public function count(): int
+    {
+        $response = $this->client->count(['index' => self::INDEX, 'type' => self::TYPE]);
+        return $response['count'];
+    }
+
     private function getBooks(array $response)
     {
         $books = array_map(function ($item) {
-            return new Response(
-                $item['_id'],
-                $item['_source']['title'],
-                $item['_source']['genre'],
-                $item['_source']['author'],
-                $item['_source']['annotation'],
-                $item['highlight']
-            );
+            return [
+                'id' => $item['_id'],
+                'title' => $item['_source']['title'],
+                'genre' => $item['_source']['genre'],
+                'author' => $item['_source']['author'],
+                'annotation' => $item['_source']['annotation'],
+                'image' => $item['_source']['image'],
+                'file' => $item['_source']['file'],
+                'highlight' => $item['highlight']
+            ];
         }, $response['hits']['hits']);
 
-        return $books;
+        return [
+            'total' => $response['hits']['total'],
+            'data' => $books
+        ];
     }
 
     private function createIndex()
@@ -149,6 +133,12 @@ class ElasticIndexBookService implements IndexBookServiceInterface
                             'enabled' => true
                         ],
                         'properties' => [
+                            'image' => [
+                                'type' => 'keyword'
+                            ],
+                            'file' => [
+                                'type' => 'keyword'
+                            ],
                             'genre' => [
                                 'type' => 'text'
                             ],
