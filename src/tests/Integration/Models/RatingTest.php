@@ -2,6 +2,7 @@
 
 namespace Tests\Integration\Models;
 
+use App\Models\Book\Book;
 use App\Models\Book\Rating;
 use App\Models\User;
 use Tests\TestCase;
@@ -30,8 +31,13 @@ class RatingTest extends TestCase
 
     public function testCheckExists()
     {
-        self::assertTrue(Rating::checkExists(1, 2));
-        self::assertFalse(Rating::checkExists(1, 210));
+        $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+
+        Book::findOrFail(1)->addRating(Rating::create(Rating::MAX, $user->id));
+
+        self::assertTrue(Rating::checkExists(1, $user->id));
+        self::assertFalse(Rating::checkExists(1, $user2->id));
     }
 
 

@@ -16,8 +16,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -28,7 +27,7 @@
         <div class="container">
 
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="/img/books.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                <img src="{{ url('/img/books.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -40,9 +39,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <form id="form-search" class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                    <form id="form-search" class="form-inline" action="{!! url('/books') !!}">
+                        <div class="input-group">
+                            <input name="q" class="form-control py-2 border-right-0 border" type="search" placeholder="Поиск" id="example-search-input">
+                            <span class="input-group-append">
+                                <div class="input-group-text bg-white"><i class="fa fa-search"></i></div>
+                            </span>
+                        </div>
                     </form>
                 </ul>
 

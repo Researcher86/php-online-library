@@ -33,7 +33,7 @@ class BooksControllerTest extends TestCase
 
         $this->actingAs($user)->post('/books/1/rating/5')
                               ->assertStatus(200)
-                              ->assertJsonFragment(['msg' => 'Your rating is saved.', 'rating' => 4.67]);
+                              ->assertJsonFragment(['msg' => 'Your rating is saved.', 'rating' => 4.5]);
     }
 
     public function testAddRatingHasError()

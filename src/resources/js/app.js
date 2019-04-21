@@ -15,6 +15,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 Vue.component('rating', require('./components/Rating'));
+Vue.component('select2', require('./components/Select2.vue'));
 
 const app = new Vue({
     el: '#app'

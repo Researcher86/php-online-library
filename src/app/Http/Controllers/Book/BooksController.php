@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Book;
 use App\Http\Controllers\Controller;
 use App\Services\Book\BookServiceInterface;
 use App\Services\Book\GenreServiceInterface;
+use App\Services\Book\Index\IndexBookServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -15,17 +17,23 @@ class BooksController extends Controller
      * @var GenreServiceInterface
      */
     private $genreService;
+    /**
+     * @var IndexBookServiceInterface
+     */
+    private $indexBookService;
 
     /**
      * Create a new controller instance.
      *
      * @param BookServiceInterface $bookService
      * @param GenreServiceInterface $genreService
+     * @param IndexBookServiceInterface $indexBookService
      */
-    public function __construct(BookServiceInterface $bookService, GenreServiceInterface $genreService)
+    public function __construct(BookServiceInterface $bookService, GenreServiceInterface $genreService, IndexBookServiceInterface $indexBookService)
     {
         $this->bookService = $bookService;
         $this->genreService = $genreService;
+        $this->indexBookService = $indexBookService;
     }
 
     /**
@@ -75,5 +83,17 @@ class BooksController extends Controller
             return response($e->getMessage(), 400);
         }
 
+    }
+
+    public function search(Request $request)
+    {
+        if (empty(trim($request->get('q')))) {
+            abort(404);
+        }
+
+        $genres = $this->genreService->getAll();
+        $books = $this->indexBookService->search($request->get('q'));
+
+        return view('search', ['genres' => $genres, 'books' => $books]);
     }
 }

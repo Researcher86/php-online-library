@@ -39,23 +39,21 @@
                 </div>
                 <div class="row book-list">
                     @foreach($books as $book)
-                        <div class="col-3 mb-4">
-                            <div class="card">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
                                 <a href="{!! url('/books', $book->id) !!}">
-                                    <img data-toggle="tooltip" data-placement="top" class="card-img-top" src="{!! url($book->getPrimaryImage()) !!}" title="{{ $book->title }}">
+                                    <img class="card-img-top" src="{!! url($book->getPrimaryImage()) !!}" alt="{{ $book->title }}">
                                 </a>
-                                <div class="card-body">
-                                    <rating class="mb-2" :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
-                                    <div class="row mb-2">
-                                        <div class="col-9">
-                                            <i class="far fa-eye"> 12456456</i>
-                                        </div>
-                                        <div class="col-2">
-
-                                        </div>
-                                    </div>
-                                    <a href="{!! url('/books', $book->id) !!}" class="card-text">{{ $book->title }}</a>
-                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <a href="{!! url('/books', $book->id) !!}" class="card-text"><h3>{{ $book->title }}</h3></a>
+                                <h5>Автор: {{ $book->author }}</h5>
+                                <h5>Жанр: {{ $book->genre }}</h5>
+                                <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
+                                <p>
+                                    {{ $book->annotation }}
+                                </p>
+                            <hr class="mt-0 mb-4">
                             </div>
                         </div>
                     @endforeach

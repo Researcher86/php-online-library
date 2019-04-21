@@ -6,6 +6,7 @@ namespace App\Services\Book\Index\Elastic;
 use App\Models\Book\Book;
 use App\Services\Book\Index\IndexBookServiceInterface;
 use Elasticsearch\Client;
+use Illuminate\Pagination\Paginator;
 use Psr\Log\LoggerInterface;
 
 class ElasticIndexBookService implements IndexBookServiceInterface
@@ -40,9 +41,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
                 'title' => $book->title,
                 'annotation' => $book->annotation,
                 'genre' => $book->getGenresNames(),
-                'author' => $book->getAuthorsNames(),
-                'image' => $book->getPrimaryImage(),
-                'file' => '',
+                'author' => $book->getAuthorsNames()
             ],
         ]);
 
@@ -69,6 +68,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             'index' => self::INDEX,
             'type' => self::TYPE,
             'body' => [
+                '_source' => [''],
                 'query' => [
                     'multi_match' => [
                         'query' => $text,
@@ -78,15 +78,12 @@ class ElasticIndexBookService implements IndexBookServiceInterface
                 'highlight' => [
                     'fields' => [
                         '*' => [
-//                            'fragment_size' => 150,
-//                            'number_of_fragments' => 4,
+                            'fragment_size' => 150,
+                            'number_of_fragments' => 4,
                             'pre_tags' => ['<b>'],
                             'post_tags' => ['</b>'],
                             "require_field_match" => true,
-                        ],
-//                        self::TYPE . '.title' => ['number_of_fragments' => 0],
-//                        self::TYPE . '.author' => ['number_of_fragments' => 0],
-//                        self::TYPE . '.description' => ['number_of_fragments' => 5, 'order' => 'score']
+                        ]
                     ]
                 ]
             ]
@@ -95,31 +92,31 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         return $this->getBooks($response);
     }
 
+    private function getBooks(array $response)
+    {
+        $ids = array_map('intval', array_column($response['hits']['hits'], '_id'));
+
+        $books = Book::whereIn('id', $ids)
+            ->orderByRaw('array_position(array[' . implode(', ', $ids) . '], id)')
+            ->paginate(8);
+
+
+        $books->map(function ($book) use ($response) {
+            $result = array_filter($response['hits']['hits'], function ($item) use ($book) {
+                return $item['_id'] == $book->id;
+            });
+            $book->highlight = $result[0]['highlight'] ?? null;
+
+            return $book;
+        });
+
+        return $books;
+    }
+
     public function count(): int
     {
         $response = $this->client->count(['index' => self::INDEX, 'type' => self::TYPE]);
         return $response['count'];
-    }
-
-    private function getBooks(array $response)
-    {
-        $books = array_map(function ($item) {
-            return [
-                'id' => $item['_id'],
-                'title' => $item['_source']['title'],
-                'genre' => $item['_source']['genre'],
-                'author' => $item['_source']['author'],
-                'annotation' => $item['_source']['annotation'],
-                'image' => $item['_source']['image'],
-                'file' => $item['_source']['file'],
-                'highlight' => $item['highlight']
-            ];
-        }, $response['hits']['hits']);
-
-        return [
-            'total' => $response['hits']['total'],
-            'data' => $books
-        ];
     }
 
     private function createIndex()
@@ -133,12 +130,6 @@ class ElasticIndexBookService implements IndexBookServiceInterface
                             'enabled' => true
                         ],
                         'properties' => [
-                            'image' => [
-                                'type' => 'keyword'
-                            ],
-                            'file' => [
-                                'type' => 'keyword'
-                            ],
                             'genre' => [
                                 'type' => 'text'
                             ],

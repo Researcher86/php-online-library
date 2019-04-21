@@ -9,3 +9,12 @@ if(!function_exists('createLinksForGenres')) {
         }, $genres));
     }
 }
+
+if(!function_exists('concatGetParams')) {
+    function concatGetParams($url) {
+        parse_str(parse_url($url, PHP_URL_QUERY), $params);
+        $params = array_merge($_GET, $params);
+
+        return explode('?', $url)[0] . '?' . http_build_query($params);
+    }
+}
