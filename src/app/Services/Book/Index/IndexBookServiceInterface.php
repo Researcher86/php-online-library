@@ -33,9 +33,11 @@ interface IndexBookServiceInterface
     /**
      * Нечеткий поиск по книге
      * @param string $text
-     * @return array
+     * @param int $page
+     * @param int $limit
+     * @return Response
      */
-    public function search(string $text);
+    public function search(string $text, int $page, int $limit): Response;
 
     /**
      * Подсчет количества книг в индексе

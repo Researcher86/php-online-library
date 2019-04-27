@@ -37,25 +37,29 @@
                         <hr class="mt-0 mb-4">
                     </div>
                 </div>
-                <div class="row book-list">
+
+                 <h4>Найдено: {{ $total }}</h4>
+
+                <div class="row book-list mt-3">
                     @foreach($books as $book)
-                        <div class="row mb-4">
-                            <div class="col-md-3">
-                                <a href="{!! url('/books', $book->id) !!}">
-                                    <img class="card-img-top" src="{!! url($book->getPrimaryImage()) !!}" alt="{{ $book->title }}">
-                                </a>
-                            </div>
-                            <div class="col-md-9">
-                                <a href="{!! url('/books', $book->id) !!}" class="card-text"><h3>{{ $book->title }}</h3></a>
-                                <h5>Автор: {{ $book->author }}</h5>
-                                <h5>Жанр: {{ $book->genre }}</h5>
-                                <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
-                                <p>
-                                    {{ $book->annotation }}
-                                </p>
-                            <hr class="mt-0 mb-4">
-                            </div>
+                        <div class="col-md-3">
+                            <a href="{!! url('/books', $book->id) !!}">
+                                <img class="card-img-top" src="{!! url($book->getPrimaryImage()) !!}" alt="{{ $book->title }}">
+                            </a>
                         </div>
+                        <div class="col-md-9">
+                            <a href="{!! url('/books', $book->id) !!}" class="card-text"><h3>{{ $book->title }}</h3></a>
+                            <b>Автор: </b><span>{{ $book->getAuthorsNames() }}</span>
+                            <br>
+                            <b>Жанр: </b><span>{{ $book->getGenresNames() }}</span>
+                            <br>
+                            <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
+                            <br>
+                            <p>
+                                {{ $book->annotation }}
+                            </p>
+                        </div>
+                        <hr class="mt-0 mb-4 w-100">
                     @endforeach
                     <div class="col-12">
                         {{ $books->links('components/pagination-default') }}

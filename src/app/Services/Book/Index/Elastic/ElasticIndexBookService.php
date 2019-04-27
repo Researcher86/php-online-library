@@ -5,8 +5,8 @@ namespace App\Services\Book\Index\Elastic;
 
 use App\Models\Book\Book;
 use App\Services\Book\Index\IndexBookServiceInterface;
+use App\Services\Book\Index\Response;
 use Elasticsearch\Client;
-use Illuminate\Pagination\Paginator;
 use Psr\Log\LoggerInterface;
 
 class ElasticIndexBookService implements IndexBookServiceInterface
@@ -62,13 +62,15 @@ class ElasticIndexBookService implements IndexBookServiceInterface
         $this->logger->info('Restore index success');
     }
 
-    public function search(string $text)
+    public function search(string $text, int $page, int $limit): Response
     {
         $response = $this->client->search([
             'index' => self::INDEX,
             'type' => self::TYPE,
             'body' => [
                 '_source' => [''],
+                'from' => ($page - 1) * $limit,
+                'size' => $limit,
                 'query' => [
                     'multi_match' => [
                         'query' => $text,
@@ -89,7 +91,10 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             ]
         ]);
 
-        return $this->getBooks($response);
+        $this->logger->debug('ElasticSearch:', $this->client->transport->getLastConnection()->getLastRequestInfo());
+
+        $books = $this->getBooks($response);
+        return new Response($response['hits']['total'], $books);
     }
 
     private function getBooks(array $response)
@@ -98,7 +103,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
 
         $books = Book::whereIn('id', $ids)
             ->orderByRaw('array_position(array[' . implode(', ', $ids) . '], id)')
-            ->paginate(8);
+            ->get();
 
 
         $books->map(function ($book) use ($response) {
@@ -110,7 +115,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             return $book;
         });
 
-        return $books;
+        return $books->all();
     }
 
     public function count(): int

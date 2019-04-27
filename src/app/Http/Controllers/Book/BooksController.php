@@ -7,6 +7,8 @@ use App\Services\Book\BookServiceInterface;
 use App\Services\Book\GenreServiceInterface;
 use App\Services\Book\Index\IndexBookServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -91,9 +93,14 @@ class BooksController extends Controller
             abort(404);
         }
 
-        $genres = $this->genreService->getAll();
-        $books = $this->indexBookService->search($request->get('q'));
+        $limit = 8;
+        $page = $request->get('page', 1);
 
-        return view('search', ['genres' => $genres, 'books' => $books]);
+        $genres = $this->genreService->getAll();
+        $result = $this->indexBookService->search($request->get('q'), $page, $limit);
+
+        $books = new LengthAwarePaginator($result->getBooks(), $result->getTotal(), $limit, $page, ['path' => Paginator::resolveCurrentPath(), 'pageName' => 'page']);
+
+        return view('search', ['genres' => $genres, 'books' => $books, 'total' => $result->getTotal()]);
     }
 }

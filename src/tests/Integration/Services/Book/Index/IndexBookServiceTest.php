@@ -48,12 +48,19 @@ class IndexBookServiceTest extends TestCase
         $this->service->delete($book->id);
     }
 
-    public function testSearch()
+    public function testSearchFirstResult()
     {
-        $book = $this->service->search('В поисках убийцы')->get(0);
+        $books = $this->service->search('В поисках убийцы', 1, 8)->getBooks();
+        $firstBook = $books[0];
 
-        self::assertEquals(41, $book->id);
-        self::assertEquals('В <b>поисках</b> <b>убийцы</b>', $book->highlight['title'][0]);
+        self::assertEquals(41, $firstBook->id);
+        self::assertEquals('В <b>поисках</b> <b>убийцы</b>', $firstBook->highlight['title'][0]);
+    }
+
+    public function testSearchLastResult()
+    {
+        $books = $this->service->search('В поисках убийцы', 7, 8)->getBooks();
+        self::assertEquals(5, count($books));
     }
 
 }

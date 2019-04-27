@@ -14,9 +14,12 @@
             </div>
             <div class="col-md-9">
                 <h3>{{ $book->title }}</h3>
-                <h5>Автор: {{ $book->getAuthorsNames() }}</h5>
-                <h5>Жанр: {{ $book->getGenresNames() }}</h5>
+                <b>Автор: </b><span>{{ $book->getAuthorsNames() }}</span>
+                <br>
+                <b>Жанр: </b><span>{{ $book->getGenresNames() }}</span>
+                <br>
                 <rating :id="{{ $book->id }}" :rating="{{ $book->calculateRatingAverage() }}"></rating>
+                <br>
                 <p>
                     {{ $book->annotation }}
                 </p>
