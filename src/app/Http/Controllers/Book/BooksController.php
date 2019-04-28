@@ -39,7 +39,7 @@ class BooksController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show book.
      *
      * @param int $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -73,11 +73,6 @@ class BooksController extends Controller
      */
     public function addRating(int $bookId, int $rating)
     {
-        if (Auth::guest()) {
-            Log::warning("Guest set book rating", ['userId' => Auth::id(), 'bookId' => $bookId, 'rating' => $rating]);
-            return response('Unauthorized.', 401);
-        }
-
         try {
             $result = $this->bookService->addRating(Auth::id(), $bookId, $rating);
             return response(['msg' => 'Your rating is saved.', 'rating' => $result], 200);

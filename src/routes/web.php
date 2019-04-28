@@ -29,7 +29,4 @@ Route::get('/', 'HomeController@index');
 Route::get('books', 'Book\BooksController@search');
 Route::get('books/genres/{id}', 'Book\BooksController@getBooksByGenre');
 Route::get('books/{id}', 'Book\BooksController@show');
-Route::post('books/{bookId}/rating/{rating}', 'Book\BooksController@addRating');
-//Route::post('article', 'ArticleController@store');
-//Route::put('article', 'ArticleController@store');
-//Route::delete('article/{id}', 'ArticleController@destroy');
+Route::post('books/{bookId}/rating/{rating}', 'Book\BooksController@addRating')->middleware('auth');
