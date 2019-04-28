@@ -38,7 +38,11 @@
                     </div>
                 </div>
 
-                 <h4>Найдено: {{ $total }}</h4>
+                @if($total)
+                    <h4>Найдено: {{ $total }}</h4>
+                @else
+                    <h4>Ничего не найдено</h4>
+                @endif
 
                 <div class="row book-list mt-3">
                     @foreach($books as $book)

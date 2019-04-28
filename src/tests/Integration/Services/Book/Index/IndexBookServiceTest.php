@@ -63,4 +63,11 @@ class IndexBookServiceTest extends TestCase
         self::assertEquals(5, count($books));
     }
 
+    public function testSearchByNumber()
+    {
+        $response = $this->service->search('12', 7, 8);
+        self::assertEquals(0, $response->getTotal());
+        self::assertEquals(0, count($response->getBooks()));
+    }
+
 }
