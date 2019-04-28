@@ -81,10 +81,15 @@ class BooksController extends Controller
             abort(404);
         }
 
-        $limit = 8;
+        $limit = 4;
         $page = $request->get('page', 1);
+        $page = $page <= 0 ? 1 : $page;
 
         $result = $this->indexBookService->search($request->get('q'), $page, $limit);
+
+        if (empty($result->getBooks())) {
+            abort(404);
+        }
 
         $books = new LengthAwarePaginator($result->getBooks(), $result->getTotal(), $limit, $page, ['path' => Paginator::resolveCurrentPath(), 'pageName' => 'page']);
 
