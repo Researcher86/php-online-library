@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\View\Composers\GenresComposer;
+use App\Http\View\Composers\TopBooksComposer;
 use App\Services\Book\BookService;
 use App\Services\Book\BookServiceInterface;
 use App\Services\Book\GenreService;
@@ -39,8 +40,12 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer(
             ['home', 'search'],
-//            '*',
             GenresComposer::class
+        );
+
+        View::composer(
+            ['home', 'search', 'book.show'],
+            TopBooksComposer::class
         );
     }
 

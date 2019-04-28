@@ -105,10 +105,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             return [];
         }
 
-        $books = Book::whereIn('id', $ids)
-            ->orderByRaw('array_position(array[' . implode(', ', $ids) . '], id)')
-            ->get();
-
+        $books = Book::getByIds($ids);
 
         $books->map(function ($book) use ($response) {
             $result = array_filter($response['hits']['hits'], function ($item) use ($book) {

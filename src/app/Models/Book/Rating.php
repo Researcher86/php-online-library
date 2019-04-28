@@ -38,4 +38,15 @@ class Rating extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function top(int $limit)
+    {
+        return self::query()
+            ->select('book_id')
+            ->groupBy(['book_id'])
+            ->orderByRaw('avg(rating) DESC')
+            ->limit($limit)
+            ->pluck('book_id')
+            ->all();
+    }
 }

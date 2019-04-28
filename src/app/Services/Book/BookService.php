@@ -41,4 +41,9 @@ class BookService implements BookServiceInterface
 
         return $book->calculateRatingAverage();
     }
+
+    public function getTop(int $limit = 5)
+    {
+        return Book::top($limit);
+    }
 }

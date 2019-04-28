@@ -94,4 +94,17 @@ class Book extends Model
     {
         return $this->images()->first()->file;
     }
+
+    public static function getByIds(array $ids)
+    {
+        return self::whereIn('id', $ids)
+            ->orderByRaw('array_position(array[' . implode(', ', $ids) . '], id)')
+            ->get();
+    }
+
+    public static function top(int $limit)
+    {
+        $ids = Rating::top($limit);
+        return self::getByIds($ids);
+    }
 }

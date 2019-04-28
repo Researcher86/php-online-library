@@ -86,11 +86,11 @@
     </nav>
 
     <div class="books">
-        <img src="/img/books/07139043.cover_250.jpg" title="">
-        <img src="/img/books/09014102.cover_250.jpg" title="">
-        <img src="/img/books/13704951.cover_250.jpg" title="">
-        <img src="/img/books/26174170.cover_250.jpg" title="">
-        <img src="/img/books/27385132.cover_250.jpg" title="">
+        @foreach($topBooks as $book)
+            <a href="{!! url('/books', $book->id) !!}">
+                <img src="{!! url($book->getPrimaryImage()) !!}" title="{{ $book->title }}">
+            </a>
+        @endforeach
     </div>
     <div class="row-product-bot"></div>
 

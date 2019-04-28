@@ -15,7 +15,7 @@ class BooksControllerTest extends TestCase
 
         $response->assertStatus(200)
                  ->assertViewIs('book.show')
-                 ->assertViewHasAll(['book']);
+                 ->assertViewHasAll(['book', 'topBooks']);
     }
 
     public function testGetByGenre()
@@ -24,7 +24,7 @@ class BooksControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertViewIs('home')
-            ->assertViewHasAll(['genres', 'books']);
+            ->assertViewHasAll(['genres', 'books', 'topBooks']);
     }
 
     public function testAddRating()

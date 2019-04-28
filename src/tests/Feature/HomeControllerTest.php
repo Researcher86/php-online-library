@@ -12,10 +12,8 @@ class HomeControllerTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
-        $response->assertSee('login');
-        $response->assertSee('register');
-        $response->assertSee('ru');
-        $response->assertSee('en');
+        $response->assertStatus(200)
+            ->assertViewIs('home')
+            ->assertViewHasAll(['genres', 'books', 'topBooks']);
     }
 }
