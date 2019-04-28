@@ -16,10 +16,6 @@ class BooksController extends Controller
 {
     private $bookService;
     /**
-     * @var GenreServiceInterface
-     */
-    private $genreService;
-    /**
      * @var IndexBookServiceInterface
      */
     private $indexBookService;
@@ -28,13 +24,11 @@ class BooksController extends Controller
      * Create a new controller instance.
      *
      * @param BookServiceInterface $bookService
-     * @param GenreServiceInterface $genreService
      * @param IndexBookServiceInterface $indexBookService
      */
-    public function __construct(BookServiceInterface $bookService, GenreServiceInterface $genreService, IndexBookServiceInterface $indexBookService)
+    public function __construct(BookServiceInterface $bookService, IndexBookServiceInterface $indexBookService)
     {
         $this->bookService = $bookService;
-        $this->genreService = $genreService;
         $this->indexBookService = $indexBookService;
     }
 
@@ -58,10 +52,9 @@ class BooksController extends Controller
      */
     public function getBooksByGenre(int $id)
     {
-        $genres = $this->genreService->getAll();
         $books = $this->bookService->getBooksByGenre($id, 8);
 
-        return view('home', ['genres' => $genres, 'books' => $books]);
+        return view('home', ['books' => $books]);
     }
 
     /**
@@ -91,11 +84,10 @@ class BooksController extends Controller
         $limit = 8;
         $page = $request->get('page', 1);
 
-        $genres = $this->genreService->getAll();
         $result = $this->indexBookService->search($request->get('q'), $page, $limit);
 
         $books = new LengthAwarePaginator($result->getBooks(), $result->getTotal(), $limit, $page, ['path' => Paginator::resolveCurrentPath(), 'pageName' => 'page']);
 
-        return view('search', ['genres' => $genres, 'books' => $books, 'total' => $result->getTotal()]);
+        return view('search', ['books' => $books, 'total' => $result->getTotal()]);
     }
 }

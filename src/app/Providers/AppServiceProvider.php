@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\GenresComposer;
 use App\Services\Book\BookService;
 use App\Services\Book\BookServiceInterface;
 use App\Services\Book\GenreService;
@@ -14,6 +15,7 @@ use App\Services\Queue\QueueServiceInterface;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +36,12 @@ class AppServiceProvider extends ServiceProvider
                 ]);
             });
         }
+
+        View::composer(
+            ['home', 'search'],
+//            '*',
+            GenresComposer::class
+        );
     }
 
     /**
