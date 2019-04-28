@@ -44,21 +44,21 @@ class RatingTest extends TestCase
     public function providerInvalidData()
     {
         return [
-            [-1.0],
-            [0.4],
-            [6.5],
-            [7.1],
+            'One' => [-1.0],
+            'Two' => [0.4],
+            'Three' => [6.5],
+            'Four' => [7.1],
         ];
     }
 
     public function providerValidData()
     {
-        return array(
-            [1.1],
-            [2.2],
-            [3.3],
-            [4.4],
-            [5.0],
-        );
+        return [
+            'One' => [1.1],
+            'Two' => [2.2],
+            'Three' => [3.3],
+            'Four' => [4.4],
+            'Five' => [5.0],
+        ];
     }
 }
