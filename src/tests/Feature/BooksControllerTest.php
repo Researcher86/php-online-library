@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Book\Book;
 use App\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BooksControllerTest extends TestCase
 {
@@ -31,9 +31,11 @@ class BooksControllerTest extends TestCase
     {
         $user = User::findOrFail(3);
 
-        $this->actingAs($user)->post('/books/1/rating/5')
+        $book = factory(Book::class)->create();
+
+        $this->actingAs($user)->post('/books/' . $book->id . '/rating/5')
                               ->assertStatus(200)
-                              ->assertJsonFragment(['msg' => 'Your rating is saved.', 'rating' => 4]);
+                              ->assertJsonFragment(['msg' => 'Your rating is saved.', 'rating' => 5]);
     }
 
     public function testAddRatingHasError()
