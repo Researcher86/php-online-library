@@ -1,9 +1,9 @@
 DC := docker-compose
-COMPOSER := docker-compose run php-cli composer
-ARTISAN := docker-compose run php-cli php artisan
+COMPOSER := docker-compose run php-cli-xdebug composer
+ARTISAN := docker-compose run php-cli-xdebug php artisan
 NODE := docker-compose run node
-PHING := docker-compose run php-cli vendor/bin/phing
-PHP := docker-compose run php-cli
+PHING := docker-compose run php-cli-xdebug vendor/bin/phing
+PHP := docker-compose run php-cli-xdebug
 NGINX := docker-compose exec nginx
 
 list:
@@ -30,7 +30,7 @@ stop:
 restart:
 	$(DC) restart
 
-# make logs c=php-cli
+# make logs c=php-cli-xdebug
 logs:
 	$(DC) logs $(CMD)
 

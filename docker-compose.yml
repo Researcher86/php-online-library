@@ -24,18 +24,6 @@ services:
             - elasticsearch
             - mongo
             - rabbitmq
-    php-cli:
-        build:
-            context: ./
-            dockerfile: docker/php-cli.docker
-        volumes:
-            - ./src:/var/www
-        depends_on:
-            - postgresql
-            - redis
-            - elasticsearch
-            - mongo
-            - rabbitmq
     consumer-book-upload:
         restart: always
         command: bash -c "./artisan command:consumer-book-upload"
