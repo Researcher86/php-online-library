@@ -73,12 +73,13 @@ return [
             'password' => env('RABBIT_PASSWORD'),
             'exchange' => 'library',
             'exchange_type' => AMQP_EX_TYPE_TOPIC,
-            'consumer_tag' => 'consumer',
-            'ssl_options' => [], // See https://secure.php.net/manual/en/context.ssl.php
-            'connect_options' => [], // See https://github.com/php-amqplib/php-amqplib/blob/master/PhpAmqpLib/Connection/AMQPSSLConnection.php
-            'queue_properties' => ['x-ha-policy' => ['S', 'all']],
-            'exchange_properties' => [],
-            'timeout' => 0,
+//            'consumer_tag' => 'consumer',
+//            'ssl_options' => [], // See https://secure.php.net/manual/en/context.ssl.php
+//            'connect_options' => [], // See https://github.com/php-amqplib/php-amqplib/blob/master/PhpAmqpLib/Connection/AMQPSSLConnection.php
+//            'queue_properties' => ['x-ha-policy' => ['S', 'all']],
+//            'exchange_properties' => [],
+//            'timeout' => 0,
+            'connect_timeout' => 60,
 
             'queues' => [
                 'process' => [

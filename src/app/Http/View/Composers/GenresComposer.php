@@ -32,7 +32,7 @@ class GenresComposer
      */
     public function compose(View $view)
     {
-        $genres = \cache()->remember('genres', now()->addMinutes(env('CACHE_TIMEOUT_DEFAULT')), function () {
+        $genres = \cache()->remember('genres', now()->addMinutes(config('cache.timeout')), function () {
             return $this->genreService->getAll();
         });
         $view->with('genres', $genres);

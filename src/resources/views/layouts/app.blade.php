@@ -102,8 +102,8 @@
         <div class="container py-3">
             <div class="row">
                 <div class="col-md-4">
-                    Онлайн библиотека на Laravel 5 (2018 г.) <br>
-                    <span class="small">Технологии: Laravel, MySQL, Redis, Elasticsearch, Docker</span>
+                    Онлайн библиотека на Laravel 5 (2018 - {!! date('Y') !!} г.) <br>
+                    <span class="small">Технологии: Laravel, PostgreSQL, Redis, ElasticSearch, Docker</span>
                 </div>
                 <div class="col-md-4">
                     <div>

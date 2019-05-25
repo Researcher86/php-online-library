@@ -75,6 +75,8 @@ return [
 
     ],
 
+    'timeout' => env('CACHE_TIMEOUT_DEFAULT'),
+
     /*
     |--------------------------------------------------------------------------
     | Cache Key Prefix

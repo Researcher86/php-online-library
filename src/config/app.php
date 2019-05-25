@@ -108,6 +108,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'top_book_count' => env('TOP_BOOK_COUNT_DEFAULT'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

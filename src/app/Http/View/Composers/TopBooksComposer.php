@@ -32,8 +32,8 @@ class TopBooksComposer
      */
     public function compose(View $view)
     {
-        $topBooks = \cache()->remember('top-books', now()->addMinutes(env('CACHE_TIMEOUT_DEFAULT')), function () {
-            return $this->bookService->getTop(env('TOP_BOOK_COUNT_DEFAULT'));
+        $topBooks = \cache()->remember('top-books', now()->addMinutes(config('cache.timeout')), function () {
+            return $this->bookService->getTop(config('app.top_book_count'));
         });
         $view->with('topBooks', $topBooks);
     }
