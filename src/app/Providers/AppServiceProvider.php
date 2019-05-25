@@ -66,7 +66,8 @@ class AppServiceProvider extends ServiceProvider
                     config('queue.connections.amqp.vhost'),
                     config('queue.connections.amqp.port'),
                     config('queue.connections.amqp.login'),
-                    config('queue.connections.amqp.password')
+                    config('queue.connections.amqp.password'),
+                    config('queue.connections.amqp.connect_timeout')
                 )->exchange(
                     config('queue.connections.amqp.exchange'),
                     config('queue.connections.amqp.exchange_type')

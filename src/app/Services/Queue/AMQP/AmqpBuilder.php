@@ -35,10 +35,11 @@ class AmqpBuilder
      * @param int $port
      * @param string $login
      * @param string $password
+     * @param $connectTimeout
      * @return AmqpBuilder
      * @throws \AMQPConnectionException
      */
-    public static function connect(string $host, string $vhost, int $port, string $login, string $password)
+    public static function connect(string $host, string $vhost, int $port, string $login, string $password, $connectTimeout)
     {
         $amqp = new self();
         $amqp->conn = new AMQPConnection([
@@ -46,7 +47,8 @@ class AmqpBuilder
             'vhost' => $vhost,
             'port' => $port,
             'login' => $login,
-            'password' => $password
+            'password' => $password,
+            'connect_timeout' => $connectTimeout,
         ]);
         $amqp->conn->connect();
         $amqp->channel = new AMQPChannel($amqp->conn);
