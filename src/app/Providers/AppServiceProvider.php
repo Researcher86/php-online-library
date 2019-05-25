@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         View::composer(
-            ['home', 'search', 'book.show'],
+            ['home', 'search', 'book.show', 'auth.*'],
             TopBooksComposer::class
         );
     }
