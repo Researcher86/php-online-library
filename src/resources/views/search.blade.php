@@ -51,7 +51,7 @@
                                 <img class="card-img-top" src="{!! url($book->getPrimaryImage()) !!}" alt="{{ $book->title }}">
                             </a>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9 content">
                             <a href="{!! url('/books', $book->id) !!}" class="card-text"><h3>{{ $book->title }}</h3></a>
                             <b>Автор: </b><span>{{ $book->getAuthorsNames() }}</span>
                             <br>
