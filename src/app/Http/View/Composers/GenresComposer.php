@@ -26,11 +26,15 @@ class GenresComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
+     * @param View $view
      * @return void
+     * @throws \Exception
      */
     public function compose(View $view)
     {
-        $view->with('genres', $this->genreService->getAll());
+        $genres = \cache()->remember('genres', now()->addMinutes(1), function () {
+            return $this->genreService->getAll();
+        });
+        $view->with('genres', $genres);
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\View\Composers;
 
 
 use App\Services\Book\BookServiceInterface;
-use App\Services\Book\GenreServiceInterface;
 use Illuminate\View\View;
 
 class TopBooksComposer
@@ -27,11 +26,15 @@ class TopBooksComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
+     * @param View $view
      * @return void
+     * @throws \Exception
      */
     public function compose(View $view)
     {
-        $view->with('topBooks', $this->bookService->getTop(5));
+        $topBooks = \cache()->remember('top-books', now()->addMinutes(1), function () {
+            return $this->bookService->getTop(5);
+        });
+        $view->with('topBooks', $topBooks);
     }
 }
