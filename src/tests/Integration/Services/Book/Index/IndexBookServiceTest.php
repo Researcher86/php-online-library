@@ -37,9 +37,6 @@ class IndexBookServiceTest extends TestCase
         $addResult = $this->service->add($book);
         $updateResult = $this->service->add($book);
 
-        // Даем время для индексации
-        sleep(2);
-
         self::assertTrue($addResult);
         self::assertTrue($updateResult);
         self::assertEquals(1, $this->service->count() - $countBefore);

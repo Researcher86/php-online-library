@@ -44,6 +44,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
                 'author' => $book->getAuthorsNames()
             ],
         ]);
+        $this->refresh();
 
         return in_array($response['result'], ['created', 'updated']);
     }
@@ -51,6 +52,7 @@ class ElasticIndexBookService implements IndexBookServiceInterface
     public function delete(int $id): bool
     {
         $response = $this->client->delete(['index' => self::INDEX, 'type' => self::TYPE, 'id' => $id]);
+        $this->refresh();
         return $response['result'] === 'deleted';
     }
 
@@ -219,5 +221,17 @@ class ElasticIndexBookService implements IndexBookServiceInterface
             $response = $this->client->indices()->delete(['index' => self::INDEX]);
             $this->logger->info('Delete index', $response);
         }
+    }
+
+    /**
+     * Refreshes elasticsearch index.
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    private function refresh(array $params = [])
+    {
+        return $this->client->indices()->refresh(array_merge(['index' => self::INDEX], $params));
     }
 }
